@@ -438,7 +438,7 @@ export default function Home() {
                     animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/glasses.png" alt="" style={{ width: '100%', display: 'block', imageRendering: 'pixelated' }} />
+                    <img src="/glasses.png" alt="" style={{ width: '100%', display: 'block', imageRendering: 'pixelated', mixBlendMode: 'multiply' }} />
                   </div>
                   <div style={{
                     position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
