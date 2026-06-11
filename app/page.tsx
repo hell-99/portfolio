@@ -434,7 +434,7 @@ export default function Home() {
                 {/* Pixel glasses */}
                 {glassesOn && <>
                   <div style={{
-                    position: 'absolute', top: '32%', left: '47%', width: '28%',
+                    position: 'absolute', top: '26%', left: '47%', width: '28%',
                     animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
