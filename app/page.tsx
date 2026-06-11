@@ -73,6 +73,7 @@ const PROJECTS: Project[] = [
     metrics: [{ val: '5', label: 'Detection Rules' }, { val: '2', label: 'Platforms' }],
     tags: ['Digital Forensics', 'Anti-Forensics', 'Python', 'MFT', 'Windows', 'Linux'],
     color: '#16a34a', bg: '#f0fdf4',
+    screenshot: '/screenshots/forensic.png',
     links: [], category: 'course', collaborators: 'Kaivalya & Aarya', course: '14-822 Host-Based Forensics · CMU',
   },
   {
