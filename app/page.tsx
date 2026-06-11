@@ -46,6 +46,7 @@ const PROJECTS: Project[] = [
     metrics: [{ val: '95.31%', label: 'Accuracy' }, { val: '100%', label: 'Block Rate' }],
     tags: ['XGBoost', 'DBSCAN', 'SDN', 'Mininet', 'Flask', 'OpenFlow'],
     color: '#0369a1', bg: '#f0f9ff',
+    screenshot: '/screenshots/zeroseg.png',
     links: [], category: 'course',
   },
   {
@@ -320,7 +321,7 @@ export default function Home() {
             {/* Badge */}
             <div style={{ marginBottom: '20px' }}>
               <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '6px 18px', borderRadius: '999px', background: '#fce7f3', color: '#be185d', border: '1px solid #fbcfe8', fontWeight: 600 }}>
-                ✦ Open to Summer 2027 Internships
+                ✦ Seeking Full-Time Roles · Graduating Dec 2026
               </span>
             </div>
 
