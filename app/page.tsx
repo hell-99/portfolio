@@ -211,12 +211,18 @@ function Nav() {
         } : {}),
       }}>
         <span style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1.3rem', background: 'linear-gradient(135deg,#f472b6,#8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>tk</span>
-        <div style={{ display: 'flex', gap: '32px' }}>
+        <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
           {['about','experience','projects','skills','contact'].map(s => (
             <a key={s} href={`#${s}`} style={{ fontSize: '0.875rem', fontWeight: 500, color: '#6b7280', textDecoration: 'none', textTransform: 'capitalize', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#f472b6')}
               onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}>{s}</a>
           ))}
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
+            style={{ fontSize: '0.8rem', fontWeight: 700, color: '#be185d', textDecoration: 'none', padding: '5px 14px', borderRadius: '999px', background: '#fce7f3', border: '1px solid #fbcfe8', transition: 'all 0.2s', fontFamily: 'JetBrains Mono' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#f472b6'; (e.currentTarget as HTMLElement).style.color = '#fff' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fce7f3'; (e.currentTarget as HTMLElement).style.color = '#be185d' }}>
+            📄 Resume
+          </a>
         </div>
       </div>
     </nav>
@@ -328,6 +334,140 @@ function ProjectCard({ project }: { project: Project }) {
   )
 }
 
+// ── Chat Widget ───────────────────────────────────────────────────────────────
+
+type Msg = { role: 'user' | 'assistant'; content: string }
+
+const SUGGESTIONS = [
+  "What projects has Twinkle built?",
+  "What's her tech stack?",
+  "Is she open to opportunities?",
+  "Tell me about IRIS",
+]
+
+function ChatWidget() {
+  const [open, setOpen] = useState(false)
+  const [msgs, setMsgs] = useState<Msg[]>([{ role: 'assistant', content: "Hi! I'm Twinkle's AI assistant ✦ Ask me anything about her work, projects, or background!" }])
+  const [input, setInput] = useState('')
+  const [loading, setLoading] = useState(false)
+  const bottomRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [msgs])
+
+  const send = async (text: string) => {
+    if (!text.trim() || loading) return
+    const newMsgs: Msg[] = [...msgs, { role: 'user', content: text }]
+    setMsgs(newMsgs)
+    setInput('')
+    setLoading(true)
+    try {
+      const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: newMsgs }) })
+      const data = await res.json()
+      setMsgs(m => [...m, { role: 'assistant', content: data.content }])
+    } catch {
+      setMsgs(m => [...m, { role: 'assistant', content: "Something went wrong — reach Twinkle at tkamdar@andrew.cmu.edu!" }])
+    }
+    setLoading(false)
+  }
+
+  return (
+    <>
+      {/* Floating button */}
+      <button onClick={() => setOpen(o => !o)} style={{
+        position: 'fixed', bottom: '28px', right: '28px', zIndex: 200,
+        width: '56px', height: '56px', borderRadius: '50%',
+        background: 'linear-gradient(135deg, #f472b6, #8b5cf6)',
+        border: 'none', cursor: 'none', boxShadow: '0 8px 32px rgba(244,114,182,0.45)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: '1.4rem', transition: 'transform 0.2s',
+      }}
+        onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.1)')}
+        onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}>
+        {open ? '✕' : '💬'}
+      </button>
+
+      {/* Chat panel */}
+      {open && (
+        <div style={{
+          position: 'fixed', bottom: '96px', right: '28px', zIndex: 199,
+          width: '340px', height: '480px', borderRadius: '24px',
+          background: '#fff', border: '1.5px solid #fbcfe8',
+          boxShadow: '0 24px 80px rgba(244,114,182,0.2)',
+          display: 'flex', flexDirection: 'column', overflow: 'hidden',
+        }}>
+          {/* Header */}
+          <div style={{ padding: '16px 20px', background: 'linear-gradient(135deg, #f472b6, #8b5cf6)', color: '#fff' }}>
+            <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1rem' }}>Ask Twinkle&apos;s AI ✦</div>
+            <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', opacity: 0.85, marginTop: '2px' }}>Powered by Claude · Ask anything</div>
+          </div>
+
+          {/* Messages */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {msgs.map((m, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                <div style={{
+                  maxWidth: '80%', padding: '10px 14px', borderRadius: m.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                  background: m.role === 'user' ? 'linear-gradient(135deg,#f472b6,#8b5cf6)' : '#fdf4ff',
+                  color: m.role === 'user' ? '#fff' : '#374151',
+                  fontSize: '0.85rem', lineHeight: 1.6,
+                  border: m.role === 'assistant' ? '1px solid #f3e8ff' : 'none',
+                }}>{m.content}</div>
+              </div>
+            ))}
+            {loading && (
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <div style={{ padding: '10px 14px', borderRadius: '18px 18px 18px 4px', background: '#fdf4ff', border: '1px solid #f3e8ff', fontSize: '1rem' }}>
+                  <span style={{ animation: 'blink 1s step-end infinite' }}>✦</span>
+                </div>
+              </div>
+            )}
+            <div ref={bottomRef} />
+          </div>
+
+          {/* Suggestions */}
+          {msgs.length === 1 && (
+            <div style={{ padding: '0 12px 8px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              {SUGGESTIONS.map(s => (
+                <button key={s} onClick={() => send(s)} style={{
+                  padding: '4px 10px', borderRadius: '999px', fontSize: '0.68rem',
+                  fontFamily: 'JetBrains Mono', background: '#fce7f3', color: '#be185d',
+                  border: '1px solid #fbcfe8', cursor: 'none', transition: 'all 0.15s',
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#f472b6'; e.currentTarget.style.color = '#fff' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = '#fce7f3'; e.currentTarget.style.color = '#be185d' }}>
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Input */}
+          <div style={{ padding: '12px', borderTop: '1px solid #f3e8ff', display: 'flex', gap: '8px' }}>
+            <input
+              value={input} onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && send(input)}
+              placeholder="Ask me anything..."
+              style={{
+                flex: 1, padding: '10px 14px', borderRadius: '999px',
+                border: '1.5px solid #fbcfe8', fontSize: '0.85rem',
+                outline: 'none', fontFamily: 'DM Sans', background: '#fdf4ff',
+                cursor: 'text',
+              }}
+            />
+            <button onClick={() => send(input)} disabled={loading || !input.trim()}
+              style={{
+                width: '38px', height: '38px', borderRadius: '50%',
+                background: 'linear-gradient(135deg, #f472b6, #8b5cf6)',
+                border: 'none', cursor: 'none', color: '#fff', fontSize: '1rem',
+                opacity: loading || !input.trim() ? 0.5 : 1,
+              }}>↑</button>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
 // ── Timeline Card ─────────────────────────────────────────────────────────────
 
 function TimelineCard({ item }: { item: TimelineItem }) {
@@ -416,6 +556,12 @@ export default function Home() {
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.color = '#374151' }}>
                   LinkedIn
                 </a>
+                <a href="/resume.pdf" download
+                  style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#be185d', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #fbcfe8', transition: 'all 0.2s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#fce7f3' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fff' }}>
+                  📄 Resume
+                </a>
               </div>
             </div>
 
@@ -434,7 +580,7 @@ export default function Home() {
                 {/* Pixel glasses */}
                 {glassesOn && <>
                   <div style={{
-                    position: 'absolute', top: '26%', left: '47%', width: '28%',
+                    position: 'absolute', top: '23%', left: '47%', width: '28%',
                     animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -630,6 +776,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <ChatWidget />
 
         {/* Footer */}
         <footer style={{ padding: '24px', textAlign: 'center', borderTop: '1px solid #f3e8ff' }}>
