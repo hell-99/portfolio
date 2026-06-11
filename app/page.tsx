@@ -17,6 +17,7 @@ type Project = {
   category: 'featured' | 'independent' | 'course'
   collaborators?: string
   course?: string
+  screenshot?: string
 }
 
 const PROJECTS: Project[] = [
@@ -35,6 +36,7 @@ const PROJECTS: Project[] = [
     ],
     tags: ['LLM Security', 'Python', 'XGBoost', 'FastAPI', 'Streamlit', 'LangChain'],
     color: '#00ff88',
+    screenshot: '/screenshots/iris.png',
     links: [
       { label: 'Live Demo', href: 'https://iris-hell99.streamlit.app', primary: true },
       { label: 'Demo Video', href: 'https://youtu.be/nqiDZgpAdyM', primary: false },
@@ -58,6 +60,7 @@ const PROJECTS: Project[] = [
     ],
     tags: ['IDS/IPS', 'Post-Quantum Crypto', 'Kubernetes', 'Ensemble ML', 'SDN/OpenFlow', 'Mininet'],
     color: '#00d2ff',
+    screenshot: 'https://raw.githubusercontent.com/hell-99/AEGIS/main/Images/Critical.png',
     links: [
       { label: 'GitHub', href: 'https://github.com/hell-99/AEGIS', primary: true },
     ],
@@ -266,37 +269,53 @@ function FlipCard({ project }: { project: Project }) {
             WebkitBackfaceVisibility: 'hidden',
           }}
         >
-          <div className="h-full rounded-xl border border-border flex flex-col justify-between p-8"
+          <div className="h-full rounded-xl border border-border flex flex-col justify-between overflow-hidden"
             style={{
               background: '#0d1117',
               borderTop: `3px solid ${project.color}`,
               minHeight: '320px',
             }}>
-            <div>
-              <span className="font-mono font-bold text-3xl block mb-2" style={{ color: project.color }}>
-                {project.name}
-              </span>
-              <p className="text-muted text-xs font-mono uppercase tracking-widest mb-4">{project.full}</p>
-              <p className="text-text text-base leading-relaxed">{project.tagline}</p>
-            </div>
 
-            {project.metrics.length > 0 && (
-              <div className={`grid grid-cols-${Math.min(project.metrics.length, 4)} gap-3 mt-6`}>
-                {project.metrics.map(m => (
-                  <div key={m.label} className="text-center p-3 rounded-lg" style={{ background: '#060912' }}>
-                    <div className="font-mono font-bold text-lg" style={{ color: project.color }}>{m.val}</div>
-                    <div className="text-muted text-xs mt-1">{m.label}</div>
-                  </div>
-                ))}
+            {/* Screenshot */}
+            {project.screenshot && (
+              <div className="w-full overflow-hidden" style={{ height: '160px' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={project.screenshot}
+                  alt={`${project.name} screenshot`}
+                  className="w-full h-full object-cover object-top"
+                  style={{ opacity: 0.85 }}
+                />
               </div>
             )}
 
-            <div className="mt-6 flex items-center justify-between">
-              {project.course
-                ? <span className="text-xs font-mono" style={{ color: project.color, opacity: 0.6 }}>{project.course}</span>
-                : <span />
-              }
-              <span className="text-muted text-xs font-mono">click to flip →</span>
+            <div className="p-8 flex flex-col justify-between flex-1">
+              <div>
+                <span className="font-mono font-bold text-3xl block mb-2" style={{ color: project.color }}>
+                  {project.name}
+                </span>
+                <p className="text-muted text-xs font-mono uppercase tracking-widest mb-4">{project.full}</p>
+                <p className="text-text text-base leading-relaxed">{project.tagline}</p>
+              </div>
+
+              {project.metrics.length > 0 && (
+                <div className={`grid grid-cols-${Math.min(project.metrics.length, 4)} gap-3 mt-6`}>
+                  {project.metrics.map(m => (
+                    <div key={m.label} className="text-center p-3 rounded-lg" style={{ background: '#060912' }}>
+                      <div className="font-mono font-bold text-lg" style={{ color: project.color }}>{m.val}</div>
+                      <div className="text-muted text-xs mt-1">{m.label}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-6 flex items-center justify-between">
+                {project.course
+                  ? <span className="text-xs font-mono" style={{ color: project.color, opacity: 0.6 }}>{project.course}</span>
+                  : <span />
+                }
+                <span className="text-muted text-xs font-mono">click to flip →</span>
+              </div>
             </div>
           </div>
         </div>
@@ -404,10 +423,10 @@ export default function Home() {
                 }}>Kamdar</span>
               </h1>
               <h2 className="text-xl text-muted font-mono mb-6">
-                Cybersecurity · AI Security · Carnegie Mellon INI
+                Information Security · AI Security · Carnegie Mellon INI
               </h2>
               <p className="text-text leading-relaxed text-lg mb-6">
-                MSIS student at Carnegie Mellon University (INI) specializing in cybersecurity.
+                MSIS student at Carnegie Mellon University (INI) specializing in Information Security.
                 I build security systems for the AI-native world — LLM agent monitors,
                 autonomous IDS/IPS, network microsegmentation, and cloud security tooling.
               </p>
