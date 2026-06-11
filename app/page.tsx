@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 
-// ── Data ────────────────────────────────────────────────────────────────────
+// ── Data ─────────────────────────────────────────────────────────────────────
 
 type Project = {
   id: string
@@ -14,7 +14,7 @@ type Project = {
   tags: string[]
   color: string
   links: { label: string; href: string; primary: boolean }[]
-  category: 'featured' | 'independent' | 'course'
+  category: 'featured' | 'course'
   collaborators?: string
   course?: string
   screenshot?: string
@@ -26,11 +26,10 @@ const PROJECTS: Project[] = [
     name: 'IRIS',
     full: 'Identity Risk Intelligence System',
     tagline: 'Behavioral security monitor for LLM agent systems',
-    description:
-      'Built a 5-layer real-time detection engine that catches indirect prompt injection, cross-agent collusion, and behavioral drift — attacks that bypass every standard defense. Core contribution: intent-action divergence detection using llama-3.3-70b to compare what an agent should do vs what it actually does.',
+    description: 'Built a 5-layer real-time detection engine that catches indirect prompt injection, cross-agent collusion, and behavioral drift — attacks that bypass every standard defense. Core contribution: intent-action divergence detection using llama-3.3-70b to compare what an agent should do vs what it actually does.',
     metrics: [
       { val: '93.1%', label: 'Precision' },
-      { val: '0.43ms', label: 'Avg Latency' },
+      { val: '0.43ms', label: 'Latency' },
       { val: '14', label: 'Collusion Patterns' },
       { val: '894', label: 'Calls Monitored' },
     ],
@@ -50,8 +49,7 @@ const PROJECTS: Project[] = [
     name: 'AEGIS',
     full: 'Autonomous Cybersecurity Intelligence System',
     tagline: 'Multi-layered autonomous IDS/IPS with post-quantum cryptography',
-    description:
-      'Multi-layered threat detection platform combining rule-based IDS, Isolation Forest anomaly detection, and CICIDS2017-trained Random Forest with ensemble voting. Deployed in a Mininet SDN environment (OpenFlow), with a post-quantum cryptographic pipeline (Dilithium3 + Kyber768), SHA-256 tamper-evident audit ledger, self-healing watchdog, NIST CSF incident response automation, Kubernetes Zero Trust architecture, and a live SOC dashboard.',
+    description: 'Multi-layered threat detection platform combining rule-based IDS, Isolation Forest anomaly detection, and CICIDS2017-trained Random Forest with ensemble voting. Deployed in a Mininet SDN environment with post-quantum cryptographic pipeline (Dilithium3 + Kyber768), SHA-256 tamper-evident audit ledger, self-healing watchdog, NIST CSF IR automation, Kubernetes Zero Trust, and a live SOC dashboard.',
     metrics: [
       { val: '3-layer', label: 'ML Ensemble' },
       { val: 'PQC', label: 'Post-Quantum Crypto' },
@@ -59,11 +57,9 @@ const PROJECTS: Project[] = [
       { val: 'NIST CSF', label: 'IR Automation' },
     ],
     tags: ['IDS/IPS', 'Post-Quantum Crypto', 'Kubernetes', 'Ensemble ML', 'SDN/OpenFlow', 'Mininet'],
-    color: '#93c5fd',
+    color: '#c4b5fd',
     screenshot: 'https://raw.githubusercontent.com/hell-99/AEGIS/main/Images/Critical.png',
-    links: [
-      { label: 'GitHub', href: 'https://github.com/hell-99/AEGIS', primary: true },
-    ],
+    links: [{ label: 'GitHub', href: 'https://github.com/hell-99/AEGIS', primary: true }],
     category: 'featured',
   },
   {
@@ -71,59 +67,51 @@ const PROJECTS: Project[] = [
     name: 'ZeroSeg',
     full: 'Live Microsegmentation Monitor',
     tagline: 'ML-driven network microsegmentation with real-time enforcement',
-    description:
-      'ML-driven network microsegmentation system using XGBoost and DBSCAN clustering on the UNSW-NB15 dataset. Ryu OpenFlow 1.3 controller on Mininet with a real-time Flask event-stream dashboard. Achieved 95.31% classification accuracy and 100% cross-segment block rate.',
+    description: 'ML-driven network microsegmentation system using XGBoost and DBSCAN clustering on the UNSW-NB15 dataset. Ryu OpenFlow 1.3 controller on Mininet with a real-time Flask event-stream dashboard. Achieved 95.31% classification accuracy and 100% cross-segment block rate.',
     metrics: [
       { val: '95.31%', label: 'Accuracy' },
       { val: '100%', label: 'Block Rate' },
-      { val: 'UNSW-NB15', label: 'Dataset' },
-      { val: 'OpenFlow 1.3', label: 'Controller' },
     ],
-    tags: ['XGBoost', 'DBSCAN', 'SDN', 'Mininet', 'Flask', 'OpenFlow', 'Microsegmentation'],
-    color: '#c4b5fd',
+    tags: ['XGBoost', 'DBSCAN', 'SDN', 'Mininet', 'Flask', 'OpenFlow'],
+    color: '#93c5fd',
     links: [],
     category: 'course',
   },
   {
     id: 'mirai',
-    name: 'Mirai Botnet Detection',
+    name: 'Mirai Botnet',
     full: 'Botnet Forensics & Detection',
     tagline: 'Simulated Mirai attacks with Suricata IDS rules and forensic analysis',
-    description:
-      'Simulated Mirai botnet attacks using Security Onion for forensic analysis. Built custom Suricata IDS rules and conducted deep network traffic analysis using Moloch/Arkime. Delivered a comprehensive forensic report covering attack vectors, IoC extraction, and detection signatures.',
+    description: 'Simulated Mirai botnet attacks using Security Onion for forensic analysis. Built custom Suricata IDS rules and conducted deep network traffic analysis using Moloch/Arkime. Delivered a comprehensive forensic report covering attack vectors, IoC extraction, and detection signatures.',
     metrics: [],
-    tags: ['Security Onion', 'Suricata', 'Moloch/Arkime', 'Forensics', 'Botnet Analysis', 'IDS'],
+    tags: ['Security Onion', 'Suricata', 'Moloch/Arkime', 'Forensics', 'IDS'],
     color: '#fda4af',
     links: [],
     category: 'course',
   },
   {
     id: 'aws',
-    name: 'AWS Security Scanner',
+    name: 'AWS Scanner',
     full: 'AWS Environment Security Auditor',
     tagline: 'Python CLI for scanning AWS environments for misconfigurations',
-    description:
-      'Command-line tool that scans AWS environments for security misconfigurations across IAM, S3, EC2, Security Groups, and more. Generates prioritized findings with remediation steps.',
+    description: 'Command-line tool that scans AWS environments for security misconfigurations across IAM, S3, EC2, Security Groups, and more. Generates prioritized findings with remediation steps.',
     metrics: [],
     tags: ['AWS', 'Python', 'CLI', 'Cloud Security', 'IAM', 'S3'],
     color: '#fcd34d',
-    links: [
-      { label: 'GitHub', href: 'https://github.com/hell-99/aws-security-scanner', primary: true },
-    ],
+    links: [{ label: 'GitHub', href: 'https://github.com/hell-99/aws-security-scanner', primary: true }],
     category: 'course',
   },
   {
     id: 'forensic-timecop',
     name: 'Forensic Time Cop',
     full: 'Anti-Forensics Detection Framework',
-    tagline: 'Cross-platform detection of timestomping, log manipulation, and artifact tampering',
-    description:
-      'Cross-platform anti-forensics detection framework for Windows and Linux. Python rule engine with 5 detection rules targeting MFT timestomping, event log manipulation, prefetch tampering, registry artifacts, and USN journal anomalies. Streamlit/Plotly dashboard for forensic timeline reconstruction. Culminated in a research paper.',
+    tagline: 'Cross-platform detection of timestomping, log manipulation & artifact tampering',
+    description: 'Cross-platform anti-forensics detection framework for Windows and Linux. Python rule engine with 5 detection rules targeting MFT timestomping, event log manipulation, prefetch tampering, registry artifacts, and USN journal anomalies. Streamlit/Plotly dashboard for forensic timeline reconstruction. Culminated in a research paper.',
     metrics: [
       { val: '5', label: 'Detection Rules' },
       { val: '2', label: 'Platforms' },
     ],
-    tags: ['Digital Forensics', 'Anti-Forensics', 'Python', 'MFT', 'Streamlit', 'Windows', 'Linux'],
+    tags: ['Digital Forensics', 'Anti-Forensics', 'Python', 'MFT', 'Windows', 'Linux'],
     color: '#86efac',
     links: [],
     category: 'course',
@@ -135,8 +123,7 @@ const PROJECTS: Project[] = [
     name: 'K8s-Guard',
     full: 'Kubernetes Threat Detection Lab',
     tagline: 'SIEM-integrated K8s threat detection for container escape and lateral movement',
-    description:
-      'Kubernetes threat detection environment integrating Security Onion (network security monitoring), Falco (runtime syscall monitoring), and Filebeat. Detected container escape, privilege escalation, and lateral movement scenarios. Handled SIEM architecture and detection engineering.',
+    description: 'Kubernetes threat detection environment integrating Security Onion (NSM), Falco (runtime syscall monitoring), and Filebeat. Detected container escape, privilege escalation, and lateral movement. Handled SIEM architecture and detection engineering.',
     metrics: [],
     tags: ['Kubernetes', 'Falco', 'Security Onion', 'SIEM', 'Filebeat', 'Container Security'],
     color: '#93c5fd',
@@ -146,92 +133,107 @@ const PROJECTS: Project[] = [
   },
 ]
 
-const FEATURED    = PROJECTS.filter(p => p.category === 'featured')
-const INDEPENDENT = PROJECTS.filter(p => p.category === 'independent')
-const COURSE      = PROJECTS.filter(p => p.category === 'course')
+const FEATURED = PROJECTS.filter(p => p.category === 'featured')
+const COURSE   = PROJECTS.filter(p => p.category === 'course')
 
 const SKILLS = [
-  {
-    category: 'Security',
-    color: '#fda4af',
-    items: ['LLM/Agent Security', 'Intrusion Detection', 'Post-Quantum Cryptography', 'Penetration Testing', 'Cloud Security (AWS)', 'Zero Trust', 'MITRE ATT&CK / ATLAS', 'Digital Forensics', 'Anti-Forensics Detection'],
-  },
-  {
-    category: 'AI & ML',
-    color: '#c4b5fd',
-    items: ['XGBoost', 'Random Forest', 'Isolation Forest', 'DBSCAN', 'Ensemble Voting', 'LangChain', 'Intent-Action Analysis', 'Behavioral Analysis'],
-  },
-  {
-    category: 'Engineering',
-    color: '#93c5fd',
-    items: ['Python', 'TypeScript', 'FastAPI', 'Flask', 'Streamlit', 'Docker', 'Kubernetes', 'SDN/OpenFlow', 'Mininet', 'PostgreSQL'],
-  },
-  {
-    category: 'Tools & Platforms',
-    color: '#86efac',
-    items: ['Security Onion', 'Suricata', 'Falco', 'Moloch/Arkime', 'Groq / Ollama', 'AWS', 'Sigma Rules', 'SIEM', 'Jupyter'],
-  },
+  { label: 'LLM / Agent Security',        color: '#f9a8d4' },
+  { label: 'Intrusion Detection',          color: '#c4b5fd' },
+  { label: 'Post-Quantum Cryptography',    color: '#86efac' },
+  { label: 'Digital Forensics',            color: '#93c5fd' },
+  { label: 'Cloud Security (AWS)',          color: '#fcd34d' },
+  { label: 'Zero Trust Architecture',      color: '#fda4af' },
+  { label: 'MITRE ATT&CK / ATLAS',         color: '#c4b5fd' },
+  { label: 'Python',                        color: '#86efac' },
+  { label: 'XGBoost / Random Forest',      color: '#f9a8d4' },
+  { label: 'Isolation Forest / DBSCAN',    color: '#93c5fd' },
+  { label: 'LangChain',                    color: '#fda4af' },
+  { label: 'FastAPI / Flask',              color: '#fcd34d' },
+  { label: 'Docker / Kubernetes',          color: '#c4b5fd' },
+  { label: 'SDN / OpenFlow / Mininet',     color: '#86efac' },
+  { label: 'Security Onion / Suricata',    color: '#f9a8d4' },
+  { label: 'Streamlit',                    color: '#93c5fd' },
+  { label: 'SIEM / Sigma Rules',           color: '#fcd34d' },
+  { label: 'TypeScript / Next.js',         color: '#c4b5fd' },
 ]
 
-const TERMINAL_LINES = [
-  { text: '> whoami', color: '#86efac', delay: 0 },
-  { text: 'twinkle_kamdar', color: '#e2e8f0', delay: 400 },
-  { text: '> cat role.txt', color: '#86efac', delay: 900 },
-  { text: 'Cybersecurity @ Carnegie Mellon University (INI)', color: '#e2e8f0', delay: 1300 },
-  { text: '> ls projects/', color: '#86efac', delay: 1900 },
-  { text: 'IRIS/  AEGIS/  ZeroSeg/  Mirai/  K8s-Guard/', color: '#93c5fd', delay: 2300 },
-  { text: '> cat focus.txt', color: '#86efac', delay: 2900 },
-  { text: 'Building security systems for the AI-native world.', color: '#e2e8f0', delay: 3300 },
-  { text: '▋', color: '#86efac', delay: 3800 },
-]
+// ── Custom Cursor ─────────────────────────────────────────────────────────────
 
-// ── Components ───────────────────────────────────────────────────────────────
-
-function Terminal() {
-  const [visibleLines, setVisibleLines] = useState<number>(0)
+function Cursor() {
+  const dotRef  = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
+  const pos     = useRef({ x: 0, y: 0 })
+  const ring    = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
-    TERMINAL_LINES.forEach((line, i) => {
-      setTimeout(() => setVisibleLines(i + 1), line.delay)
+    const onMove = (e: MouseEvent) => {
+      pos.current = { x: e.clientX, y: e.clientY }
+      if (dotRef.current) {
+        dotRef.current.style.left = `${e.clientX}px`
+        dotRef.current.style.top  = `${e.clientY}px`
+      }
+    }
+    const onEnter = () => ringRef.current?.classList.add('hovering')
+    const onLeave = () => ringRef.current?.classList.remove('hovering')
+
+    window.addEventListener('mousemove', onMove)
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', onEnter)
+      el.addEventListener('mouseleave', onLeave)
     })
+
+    let raf: number
+    const animate = () => {
+      ring.current.x += (pos.current.x - ring.current.x) * 0.12
+      ring.current.y += (pos.current.y - ring.current.y) * 0.12
+      if (ringRef.current) {
+        ringRef.current.style.left = `${ring.current.x}px`
+        ringRef.current.style.top  = `${ring.current.y}px`
+      }
+      raf = requestAnimationFrame(animate)
+    }
+    raf = requestAnimationFrame(animate)
+
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(raf)
+    }
   }, [])
 
   return (
-    <div className="card p-6 font-mono text-sm leading-7 max-w-xl w-full glow-green">
-      <div className="flex gap-2 mb-4">
-        <div className="w-3 h-3 rounded-full bg-red" />
-        <div className="w-3 h-3 rounded-full bg-amber" />
-        <div className="w-3 h-3 rounded-full bg-green" />
-        <span className="ml-2 text-muted text-xs">terminal</span>
-      </div>
-      {TERMINAL_LINES.slice(0, visibleLines).map((line, i) => (
-        <div key={i} style={{ color: line.color }}>
-          {line.text}
-        </div>
-      ))}
-    </div>
+    <>
+      <div ref={dotRef}  className="cursor-dot"  />
+      <div ref={ringRef} className="cursor-ring" />
+    </>
   )
 }
 
+// ── Nav ───────────────────────────────────────────────────────────────────────
+
 function Nav() {
   const [scrolled, setScrolled] = useState(false)
-
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+    const fn = () => setScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', fn)
+    return () => window.removeEventListener('scroll', fn)
   }, [])
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-bg/90 backdrop-blur border-b border-border' : ''
-    }`}>
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <span className="font-mono font-bold text-green text-lg">TK<span className="text-muted">_</span></span>
-        <div className="flex gap-8">
-          {['About', 'Projects', 'Skills', 'Contact'].map(s => (
-            <a key={s} href={`#${s.toLowerCase()}`}
-              className="text-muted hover:text-green transition-colors text-sm font-mono">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-3' : 'py-5'}`}>
+      <div className={`max-w-5xl mx-auto px-6 flex items-center justify-between transition-all duration-500 ${
+        scrolled ? 'glass rounded-2xl py-3 px-6' : ''
+      }`}>
+        <span className="font-mono font-bold text-lg" style={{
+          background: 'linear-gradient(135deg, #f9a8d4, #c4b5fd)',
+          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+        }}>tk.</span>
+        <div className="flex items-center gap-8">
+          {['about', 'projects', 'skills', 'contact'].map(s => (
+            <a key={s} href={`#${s}`}
+              className="text-sm font-medium capitalize transition-colors"
+              style={{ color: 'rgba(241,240,255,0.5)' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#f9a8d4')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(241,240,255,0.5)')}>
               {s}
             </a>
           ))}
@@ -241,327 +243,357 @@ function Nav() {
   )
 }
 
-function FlipCard({ project }: { project: Project }) {
-  const [flipped, setFlipped] = useState(false)
-  const FLIP_HEIGHT = 380
+// ── 3D Tilt Card ─────────────────────────────────────────────────────────────
+
+function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width  - 0.5
+    const y = (e.clientY - rect.top)  / rect.height - 0.5
+    ref.current.style.transform = `perspective(800px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.02)`
+  }, [])
+
+  const onLeave = useCallback(() => {
+    if (!ref.current) return
+    ref.current.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)'
+  }, [])
 
   return (
-    <div className="rounded-xl border overflow-hidden flex flex-col"
-      style={{ background: '#161f35', borderTop: `3px solid ${project.color}`, borderLeft: '1px solid #2a3a5c', borderRight: '1px solid #2a3a5c', borderBottom: '1px solid #2a3a5c' }}>
+    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
+      className={className}
+      style={{ transition: 'transform 0.15s ease', transformStyle: 'preserve-3d', willChange: 'transform' }}>
+      {children}
+    </div>
+  )
+}
 
-      {/* ── Flipping area ── */}
-      <div
-        className="cursor-pointer"
-        style={{ perspective: '1000px', height: `${FLIP_HEIGHT}px`, flexShrink: 0 }}
-        onClick={() => setFlipped(f => !f)}
-      >
-        <div style={{
-          position: 'relative', width: '100%', height: '100%',
-          transformStyle: 'preserve-3d',
-          transition: 'transform 0.6s cubic-bezier(0.4,0,0.2,1)',
-          transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-        }}>
+// ── Flip Project Card ─────────────────────────────────────────────────────────
 
-          {/* Front */}
-          <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', overflow: 'hidden' }}>
-            <div className="h-full flex flex-col">
-              {project.screenshot ? (
-                <div className="w-full overflow-hidden" style={{ height: '160px', flexShrink: 0 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={project.screenshot} alt={`${project.name} screenshot`}
-                    className="w-full h-full object-cover object-top" style={{ opacity: 0.88 }} />
-                </div>
-              ) : null}
+function ProjectCard({ project }: { project: Project }) {
+  const [flipped, setFlipped] = useState(false)
+  const FLIP_H = 400
 
-              <div className="p-6 flex flex-col flex-1">
-                <span className="font-mono font-bold text-3xl block mb-1" style={{ color: project.color }}>
-                  {project.name}
-                </span>
-                <p className="text-muted text-xs font-mono uppercase tracking-widest mb-3">{project.full}</p>
-                {project.course && (
-                  <p className="text-xs font-mono mb-3" style={{ color: project.color, opacity: 0.6 }}>{project.course}</p>
-                )}
-                <p className="text-text text-sm leading-relaxed mb-4">{project.tagline}</p>
+  return (
+    <TiltCard>
+      <div className="rounded-2xl overflow-hidden flex flex-col glass"
+        style={{ borderTop: `2px solid ${project.color}40` }}>
 
-                {project.metrics.length > 0 && (
-                  <div className={`grid grid-cols-${Math.min(project.metrics.length, 4)} gap-2 mb-4`}>
-                    {project.metrics.map(m => (
-                      <div key={m.label} className="text-center p-2 rounded-lg" style={{ background: '#0d1220' }}>
-                        <div className="font-mono font-bold" style={{ color: project.color, fontSize: '0.95rem' }}>{m.val}</div>
-                        <div className="text-muted" style={{ fontSize: '0.65rem' }}>{m.label}</div>
-                      </div>
-                    ))}
+        {/* Flipping area */}
+        <div style={{ perspective: '1000px', height: `${FLIP_H}px`, cursor: 'none' }}
+          onClick={() => setFlipped(f => !f)}>
+          <div style={{
+            position: 'relative', width: '100%', height: '100%',
+            transformStyle: 'preserve-3d',
+            transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)',
+            transform: flipped ? 'rotateY(180deg)' : 'rotateY(0)',
+          }}>
+
+            {/* Front */}
+            <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', overflow: 'hidden' }}>
+              <div className="h-full flex flex-col">
+                {project.screenshot && (
+                  <div style={{ height: '160px', flexShrink: 0, overflow: 'hidden', position: 'relative' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={project.screenshot} alt={project.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', opacity: 0.8 }} />
+                    <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, transparent 40%, #09091a)` }} />
                   </div>
                 )}
 
-                <div className="mt-auto flex justify-end">
-                  <span className="text-xs font-mono px-3 py-1 rounded-full border border-border text-muted">
-                    ↺ flip to know more
-                  </span>
+                <div className="p-6 flex flex-col flex-1">
+                  <div className="flex items-start justify-between mb-1">
+                    <span className="font-mono font-bold text-2xl" style={{ color: project.color }}>{project.name}</span>
+                  </div>
+                  <p style={{ color: 'rgba(241,240,255,0.35)', fontSize: '0.65rem', fontFamily: 'JetBrains Mono', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
+                    {project.full}
+                  </p>
+                  {project.course && (
+                    <p style={{ color: project.color, opacity: 0.6, fontSize: '0.7rem', fontFamily: 'JetBrains Mono', marginBottom: '10px' }}>{project.course}</p>
+                  )}
+                  <p style={{ color: 'rgba(241,240,255,0.75)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '16px' }}>{project.tagline}</p>
+
+                  {project.metrics.length > 0 && (
+                    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(project.metrics.length, 4)}, 1fr)`, gap: '8px', marginBottom: '16px' }}>
+                      {project.metrics.map(m => (
+                        <div key={m.label} style={{ textAlign: 'center', padding: '8px 4px', borderRadius: '12px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                          <div style={{ fontFamily: 'JetBrains Mono', fontWeight: 700, fontSize: '0.95rem', color: project.color }}>{m.val}</div>
+                          <div style={{ fontSize: '0.6rem', color: 'rgba(241,240,255,0.4)', marginTop: '2px' }}>{m.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end' }}>
+                    <span style={{
+                      fontSize: '0.7rem', fontFamily: 'JetBrains Mono',
+                      color: 'rgba(241,240,255,0.3)', padding: '4px 12px',
+                      borderRadius: '999px', border: '1px solid rgba(255,255,255,0.08)',
+                    }}>↺ flip to know more</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Back */}
+            <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)', overflow: 'hidden' }}>
+              <div className="h-full p-6 flex flex-col" style={{ borderLeft: `2px solid ${project.color}30` }}>
+                <p style={{ color: 'rgba(241,240,255,0.7)', fontSize: '0.875rem', lineHeight: 1.7, flex: 1, overflow: 'auto' }}>{project.description}</p>
+                {project.collaborators && (
+                  <p style={{ fontSize: '0.7rem', fontFamily: 'JetBrains Mono', color: project.color, opacity: 0.6, margin: '12px 0' }}>with {project.collaborators}</p>
+                )}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '12px 0' }}>
+                  {project.tags.map(t => <span key={t} className="badge">{t}</span>)}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <span style={{
+                    fontSize: '0.7rem', fontFamily: 'JetBrains Mono',
+                    color: 'rgba(241,240,255,0.3)', padding: '4px 12px',
+                    borderRadius: '999px', border: '1px solid rgba(255,255,255,0.08)',
+                  }}>↺ flip back</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Back */}
-          <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)', overflow: 'hidden' }}>
-            <div className="h-full p-6 flex flex-col" style={{ borderLeft: `2px solid ${project.color}20` }}>
-              <p className="text-muted text-sm leading-relaxed flex-1 overflow-auto">{project.description}</p>
-              {project.collaborators && (
-                <p className="text-xs font-mono mt-3" style={{ color: project.color, opacity: 0.7 }}>
-                  with {project.collaborators}
-                </p>
-              )}
-              <div className="flex flex-wrap gap-2 mt-4">
-                {project.tags.map(t => (
-                  <span key={t} className="badge bg-surface text-muted border border-border">{t}</span>
-                ))}
-              </div>
-              <div className="mt-4 flex justify-end">
-                <span className="text-xs font-mono px-3 py-1 rounded-full border border-border text-muted">
-                  ↺ flip back
-                </span>
-              </div>
-            </div>
+        {/* Always-visible links */}
+        {project.links.length > 0 && (
+          <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexWrap: 'wrap', gap: '8px' }}
+            onClick={e => e.stopPropagation()}>
+            {project.links.map(l => (
+              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+                className={l.primary ? 'btn-primary' : 'btn-glass'}
+                style={l.primary ? { background: `linear-gradient(135deg, ${project.color}, ${project.color}aa)`, fontSize: '0.8rem', padding: '7px 18px' } : { fontSize: '0.8rem', padding: '7px 18px' }}>
+                {l.label}
+              </a>
+            ))}
           </div>
-        </div>
+        )}
       </div>
-
-      {/* ── Always-visible links ── */}
-      {project.links.length > 0 && (
-        <div className="px-6 py-4 border-t border-border flex flex-wrap gap-3">
-          {project.links.map(l => (
-            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-              className={`px-4 py-2 rounded-lg text-sm font-mono font-medium transition-all ${
-                l.primary ? 'text-bg hover:opacity-90' : 'border border-border text-muted hover:border-green hover:text-green'
-              }`}
-              style={l.primary ? { background: project.color } : {}}>
-              {l.label}
-            </a>
-          ))}
-        </div>
-      )}
-    </div>
+    </TiltCard>
   )
 }
 
-function SectionHeader({ label, title, sub }: { label: string; title: string; sub: string }) {
-  return (
-    <div className="mb-12">
-      <div className="font-mono text-green text-sm tracking-widest uppercase mb-3">{label}</div>
-      <h2 className="text-4xl font-bold text-text mb-3">{title}</h2>
-      <p className="text-muted text-lg max-w-2xl">{sub}</p>
-    </div>
-  )
-}
-
-// ── Page ─────────────────────────────────────────────────────────────────────
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function Home() {
-  const sectionsRef = useRef<HTMLDivElement[]>([])
+  const fadeRefs = useRef<Element[]>([])
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const obs = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
       { threshold: 0.1 }
     )
-    sectionsRef.current.forEach(el => el && observer.observe(el))
-    return () => observer.disconnect()
+    fadeRefs.current.forEach(el => el && obs.observe(el))
+    return () => obs.disconnect()
   }, [])
 
-  const addRef = (el: HTMLDivElement | null) => {
-    if (el && !sectionsRef.current.includes(el)) sectionsRef.current.push(el)
+  const addFade = (el: HTMLDivElement | null) => {
+    if (el && !fadeRefs.current.includes(el)) fadeRefs.current.push(el)
   }
 
   return (
-    <main className="min-h-screen bg-bg grid-bg">
+    <>
+      {/* Aurora + noise */}
+      <div className="aurora">
+        <div className="blob blob-1" />
+        <div className="blob blob-2" />
+        <div className="blob blob-3" />
+        <div className="blob blob-4" />
+        <div className="blob blob-5" />
+      </div>
+      <div className="noise" />
+
+      <Cursor />
       <Nav />
 
-      {/* ── Hero ── */}
-      <section id="about" className="min-h-screen flex items-center pt-20">
-        <div className="max-w-6xl mx-auto px-6 py-20 w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              {/* Avatar */}
-              <div className="flex items-center gap-5 mb-6">
-                <div className="avatar-ring" style={{ width: '80px', height: '80px', flexShrink: 0 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://avatars.githubusercontent.com/u/167800111?v=4"
-                    alt="Twinkle Kamdar"
-                  />
-                </div>
-                <div className="font-mono text-green text-sm tracking-widest uppercase leading-snug">
-                  &gt; Available for<br />Summer 2027 Internships
-                </div>
-              </div>
+      <main style={{ position: 'relative', zIndex: 2 }}>
 
-              <h1 className="text-5xl font-bold leading-tight mb-4">
-                <span className="text-text">Twinkle </span>
-                <span style={{
-                  background: 'linear-gradient(135deg, #86efac, #93c5fd, #c4b5fd)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}>Kamdar</span>
-              </h1>
-              <h2 className="text-xl text-muted font-mono mb-6">
-                Information Security · AI Security · Carnegie Mellon INI
-              </h2>
-              <p className="text-text leading-relaxed text-lg mb-6">
-                MSIS student at Carnegie Mellon University (INI) specializing in Information Security.
-                I build security systems for the AI-native world — LLM agent monitors,
-                autonomous IDS/IPS, network microsegmentation, and cloud security tooling.
-              </p>
-              <p className="text-muted leading-relaxed mb-10">
-                The attack surface is shifting from "what the model says" to "what the agent does."
-                I'm building the detection layer that catches what existing tools miss.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <a href="#projects"
-                  className="px-6 py-3 rounded-lg font-mono font-medium text-bg transition-opacity hover:opacity-90"
-                  style={{ background: '#86efac' }}>
-                  View Projects
-                </a>
-                <a href="https://github.com/hell-99" target="_blank" rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-lg font-mono font-medium border border-border text-muted hover:border-green hover:text-green transition-all">
-                  GitHub
-                </a>
-                <a href="https://linkedin.com/in/twinklekamdar" target="_blank" rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-lg font-mono font-medium border border-border text-muted hover:border-blue hover:text-blue transition-all">
-                  LinkedIn
-                </a>
+        {/* ── Hero ── */}
+        <section id="about" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '120px 24px 80px' }}>
+          <div style={{ maxWidth: '700px', width: '100%', textAlign: 'center' }}>
+
+            {/* Photo */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
+              <div className="avatar-ring" style={{ width: '120px', height: '120px' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="https://avatars.githubusercontent.com/u/167800111?v=4" alt="Twinkle Kamdar" />
               </div>
             </div>
-            <div className="flex justify-center lg:justify-end">
-              <Terminal />
+
+            {/* Badge */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+              <span style={{
+                fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.15em',
+                textTransform: 'uppercase', padding: '6px 16px', borderRadius: '999px',
+                background: 'rgba(249,168,212,0.1)', border: '1px solid rgba(249,168,212,0.25)',
+                color: '#f9a8d4',
+              }}>✦ Available for Summer 2027 Internships</span>
             </div>
-          </div>
 
-          <div ref={addRef} className="fade-section grid grid-cols-2 md:grid-cols-4 gap-4 mt-20">
-            {[
-              { val: '7+',       label: 'Security Projects', color: '#86efac' },
-              { val: 'CMU INI',  label: 'Graduate Program',  color: '#93c5fd' },
-              { val: 'Dec 2026', label: 'Graduating',         color: '#c4b5fd' },
-              { val: 'Open',     label: 'To Opportunities',   color: '#fcd34d' },
-            ].map(s => (
-              <div key={s.label} className="card p-6 text-center">
-                <div className="font-mono font-bold text-2xl mb-1" style={{ color: s.color }}>{s.val}</div>
-                <div className="text-muted text-sm">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            {/* Name */}
+            <h1 style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', fontWeight: 800, lineHeight: 1.05, marginBottom: '16px', letterSpacing: '-0.02em' }}>
+              <span className="grad-text">Twinkle Kamdar</span>
+            </h1>
 
-      {/* ── Projects ── */}
-      <section id="projects" className="py-24">
-        <div className="max-w-6xl mx-auto px-6">
-
-          {/* Featured */}
-          <div ref={addRef} className="fade-section">
-            <SectionHeader
-              label="// featured projects"
-              title="Flagship Work"
-              sub="End-to-end security systems built from scratch. Production-ready, open source."
-            />
-          </div>
-          <div className="grid md:grid-cols-2 gap-6 mb-20">
-            {FEATURED.map((p, i) => (
-              <div key={p.id} ref={addRef} className="fade-section" style={{ transitionDelay: `${i * 0.1}s` }}>
-                <FlipCard project={p} />
-              </div>
-            ))}
-          </div>
-
-          {/* Course */}
-          <div ref={addRef} className="fade-section">
-            <SectionHeader
-              label="// course projects"
-              title="CMU Coursework"
-              sub="Graduate-level security engineering — threat simulation, detection engineering, and forensics at CMU INI."
-            />
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {COURSE.map((p, i) => (
-              <div key={p.id} ref={addRef} className="fade-section" style={{ transitionDelay: `${i * 0.1}s` }}>
-                <FlipCard project={p} />
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── Skills ── */}
-      <section id="skills" className="py-24" style={{ background: '#111827' }}>
-        <div className="max-w-6xl mx-auto px-6">
-          <div ref={addRef} className="fade-section">
-            <SectionHeader
-              label="// skills"
-              title="Technical Stack"
-              sub="Tools and technologies across security, ML, and engineering."
-            />
-          </div>
-          <div ref={addRef} className="fade-section grid md:grid-cols-2 gap-6">
-            {SKILLS.map(skill => (
-              <div key={skill.category} className="card p-6" style={{ borderLeft: `3px solid ${skill.color}` }}>
-                <h3 className="font-mono font-bold mb-4" style={{ color: skill.color }}>{skill.category}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {skill.items.map(item => (
-                    <span key={item} className="badge bg-surface text-muted border border-border text-xs">{item}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Contact ── */}
-      <section id="contact" className="py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <div ref={addRef} className="fade-section text-center max-w-2xl mx-auto">
-            <div className="font-mono text-green text-sm tracking-widest uppercase mb-3">// contact</div>
-            <h2 className="text-4xl font-bold text-text mb-6">Get In Touch</h2>
-            <p className="text-muted text-lg mb-10">
-              Open to internships, research collaborations, and full-time roles in
-              cybersecurity and AI security. Graduating December 2026.
+            {/* Subtitle */}
+            <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.9rem', color: 'rgba(241,240,255,0.45)', letterSpacing: '0.08em', marginBottom: '24px' }}>
+              MSIS · Information Security · Carnegie Mellon INI
             </p>
-            <div className="card p-8 text-left mb-8">
-              <div className="font-mono text-sm space-y-4">
+
+            <p style={{ fontSize: '1.1rem', color: 'rgba(241,240,255,0.65)', lineHeight: 1.75, maxWidth: '520px', margin: '0 auto 40px' }}>
+              I build security systems for the AI-native world — LLM agent monitors,
+              autonomous IDS/IPS, and forensics tooling. The attack surface is shifting.
+              I'm building the detection layer that catches what existing tools miss.
+            </p>
+
+            {/* CTAs */}
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <a href="#projects" className="btn-primary">View Projects ↓</a>
+              <a href="https://github.com/hell-99" target="_blank" rel="noopener noreferrer" className="btn-glass">GitHub</a>
+              <a href="https://linkedin.com/in/twinklekamdar" target="_blank" rel="noopener noreferrer" className="btn-glass">LinkedIn</a>
+            </div>
+
+            {/* Stats */}
+            <div ref={addFade} className="fade-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '12px', marginTop: '64px' }}>
+              {[
+                { val: '7+',        label: 'Projects',        color: '#f9a8d4' },
+                { val: 'CMU INI',   label: 'Graduate Program', color: '#c4b5fd' },
+                { val: 'Dec 2026',  label: 'Graduating',       color: '#86efac' },
+                { val: 'Open',      label: 'To Opportunities', color: '#93c5fd' },
+              ].map(s => (
+                <div key={s.label} className="glass" style={{ padding: '20px 12px', textAlign: 'center', borderRadius: '16px' }}>
+                  <div style={{ fontFamily: 'JetBrains Mono', fontWeight: 700, fontSize: '1.1rem', color: s.color, marginBottom: '4px' }}>{s.val}</div>
+                  <div style={{ fontSize: '0.7rem', color: 'rgba(241,240,255,0.4)' }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Featured Projects ── */}
+        <section id="projects" style={{ padding: '80px 24px' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div ref={addFade} className="fade-up" style={{ marginBottom: '48px' }}>
+              <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', color: '#f9a8d4', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '12px' }}>
+                ✦ featured projects
+              </p>
+              <h2 style={{ fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 800, letterSpacing: '-0.02em' }}>Flagship Work</h2>
+              <p style={{ color: 'rgba(241,240,255,0.5)', marginTop: '8px', maxWidth: '480px' }}>
+                End-to-end security systems built from scratch. Production-ready, open source.
+              </p>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(480px, 1fr))', gap: '20px' }}>
+              {FEATURED.map((p, i) => (
+                <div key={p.id} ref={addFade} className="fade-up" style={{ transitionDelay: `${i * 0.1}s` }}>
+                  <ProjectCard project={p} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Course Projects ── */}
+        <section style={{ padding: '80px 24px' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div ref={addFade} className="fade-up" style={{ marginBottom: '48px' }}>
+              <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', color: '#c4b5fd', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '12px' }}>
+                ✦ coursework
+              </p>
+              <h2 style={{ fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 800, letterSpacing: '-0.02em' }}>CMU Projects</h2>
+              <p style={{ color: 'rgba(241,240,255,0.5)', marginTop: '8px', maxWidth: '480px' }}>
+                Graduate-level security engineering at Carnegie Mellon INI.
+              </p>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+              {COURSE.map((p, i) => (
+                <div key={p.id} ref={addFade} className="fade-up" style={{ transitionDelay: `${i * 0.08}s` }}>
+                  <ProjectCard project={p} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Skills ── */}
+        <section id="skills" style={{ padding: '80px 24px' }}>
+          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+            <div ref={addFade} className="fade-up" style={{ marginBottom: '48px' }}>
+              <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', color: '#86efac', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '12px' }}>
+                ✦ skills
+              </p>
+              <h2 style={{ fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 800, letterSpacing: '-0.02em' }}>Technical Stack</h2>
+            </div>
+            <div ref={addFade} className="fade-up" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              {SKILLS.map(s => (
+                <span key={s.label} style={{
+                  padding: '8px 18px', borderRadius: '999px',
+                  fontFamily: 'JetBrains Mono', fontSize: '0.72rem',
+                  fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em',
+                  background: `${s.color}12`,
+                  border: `1px solid ${s.color}35`,
+                  color: s.color,
+                  transition: 'all 0.2s',
+                }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${s.color}25`; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = `${s.color}12`; (e.currentTarget as HTMLElement).style.transform = 'none' }}
+                >{s.label}</span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Contact ── */}
+        <section id="contact" style={{ padding: '80px 24px 120px' }}>
+          <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+            <div ref={addFade} className="fade-up">
+              <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', color: '#fda4af', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '12px' }}>
+                ✦ contact
+              </p>
+              <h2 style={{ fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '16px' }}>Say Hello ✦</h2>
+              <p style={{ color: 'rgba(241,240,255,0.5)', lineHeight: 1.7, marginBottom: '48px' }}>
+                Open to internships, research, and full-time roles in cybersecurity and AI security.
+                Graduating December 2026.
+              </p>
+
+              <div className="glass" style={{ padding: '32px', marginBottom: '32px', textAlign: 'left' }}>
                 {[
-                  { label: 'Email',    val: 'tkamdar@andrew.cmu.edu',        href: 'mailto:tkamdar@andrew.cmu.edu',        color: '#86efac' },
-                  { label: 'LinkedIn', val: 'linkedin.com/in/twinklekamdar', href: 'https://linkedin.com/in/twinklekamdar', color: '#93c5fd' },
-                  { label: 'GitHub',   val: 'github.com/hell-99',            href: 'https://github.com/hell-99',           color: '#c4b5fd' },
-                  { label: 'IRIS Demo',val: 'iris-hell99.streamlit.app',     href: 'https://iris-hell99.streamlit.app',    color: '#fcd34d' },
+                  { label: 'Email',     val: 'tkamdar@andrew.cmu.edu',        href: 'mailto:tkamdar@andrew.cmu.edu',        color: '#f9a8d4' },
+                  { label: 'LinkedIn',  val: 'linkedin.com/in/twinklekamdar', href: 'https://linkedin.com/in/twinklekamdar', color: '#c4b5fd' },
+                  { label: 'GitHub',    val: 'github.com/hell-99',            href: 'https://github.com/hell-99',           color: '#86efac' },
+                  { label: 'IRIS Demo', val: 'iris-hell99.streamlit.app',     href: 'https://iris-hell99.streamlit.app',    color: '#93c5fd' },
                 ].map(c => (
-                  <div key={c.label} className="flex items-center gap-4">
-                    <span className="text-muted w-20">{c.label}</span>
-                    <span className="text-border">→</span>
+                  <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                    <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', color: 'rgba(241,240,255,0.3)', width: '70px' }}>{c.label}</span>
+                    <span style={{ color: 'rgba(241,240,255,0.2)' }}>→</span>
                     <a href={c.href} target="_blank" rel="noopener noreferrer"
-                      className="transition-colors hover:opacity-80" style={{ color: c.color }}>
+                      style={{ fontFamily: 'JetBrains Mono', fontSize: '0.8rem', color: c.color, transition: 'opacity 0.2s' }}
+                      onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
+                      onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
                       {c.val}
                     </a>
                   </div>
                 ))}
               </div>
-            </div>
-            <a href="mailto:tkamdar@andrew.cmu.edu"
-              className="inline-block px-10 py-4 rounded-lg font-mono font-bold text-bg transition-opacity hover:opacity-90 text-lg"
-              style={{ background: 'linear-gradient(135deg, #86efac, #93c5fd)' }}>
-              Say Hello →
-            </a>
-          </div>
-        </div>
-      </section>
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-border py-8">
-        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
-          <span className="font-mono text-muted text-sm">Twinkle Kamdar · CMU INI · 2026</span>
-          <span className="font-mono text-muted text-sm">Built with Next.js · Deployed on Vercel</span>
-        </div>
-      </footer>
-    </main>
+              <a href="mailto:tkamdar@andrew.cmu.edu" className="btn-primary"
+                style={{ fontSize: '1rem', padding: '14px 40px' }}>
+                Get In Touch →
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '24px', textAlign: 'center' }}>
+          <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', color: 'rgba(241,240,255,0.2)' }}>
+            Twinkle Kamdar · CMU INI · 2026 · Built with Next.js
+          </span>
+        </footer>
+      </main>
+    </>
   )
 }
