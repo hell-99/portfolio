@@ -556,7 +556,7 @@ export default function Home() {
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.color = '#374151' }}>
                   LinkedIn
                 </a>
-                <a href="/resume.pdf" download
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
                   style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#be185d', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #fbcfe8', transition: 'all 0.2s' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#fce7f3' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fff' }}>
@@ -580,7 +580,7 @@ export default function Home() {
                 {/* Pixel glasses */}
                 {glassesOn && <>
                   <div style={{
-                    position: 'absolute', top: '23%', left: '47%', width: '28%',
+                    position: 'absolute', top: '27%', left: '49%', width: '28%',
                     animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
