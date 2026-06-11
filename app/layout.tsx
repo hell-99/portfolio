@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+// Force light bg on html
+
 
 export const metadata: Metadata = {
   title: 'Twinkle Kamdar — Cybersecurity & AI',
