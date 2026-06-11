@@ -35,7 +35,7 @@ const PROJECTS: Project[] = [
       { val: '894', label: 'Calls Monitored' },
     ],
     tags: ['LLM Security', 'Python', 'XGBoost', 'FastAPI', 'Streamlit', 'LangChain'],
-    color: '#00ff88',
+    color: '#86efac',
     screenshot: '/screenshots/iris.png',
     links: [
       { label: 'Live Demo', href: 'https://iris-hell99.streamlit.app', primary: true },
@@ -59,7 +59,7 @@ const PROJECTS: Project[] = [
       { val: 'NIST CSF', label: 'IR Automation' },
     ],
     tags: ['IDS/IPS', 'Post-Quantum Crypto', 'Kubernetes', 'Ensemble ML', 'SDN/OpenFlow', 'Mininet'],
-    color: '#00d2ff',
+    color: '#93c5fd',
     screenshot: 'https://raw.githubusercontent.com/hell-99/AEGIS/main/Images/Critical.png',
     links: [
       { label: 'GitHub', href: 'https://github.com/hell-99/AEGIS', primary: true },
@@ -80,7 +80,7 @@ const PROJECTS: Project[] = [
       { val: 'OpenFlow 1.3', label: 'Controller' },
     ],
     tags: ['XGBoost', 'DBSCAN', 'SDN', 'Mininet', 'Flask', 'OpenFlow', 'Microsegmentation'],
-    color: '#a855f7',
+    color: '#c4b5fd',
     links: [],
     category: 'course',
   },
@@ -93,7 +93,7 @@ const PROJECTS: Project[] = [
       'Simulated Mirai botnet attacks using Security Onion for forensic analysis. Built custom Suricata IDS rules and conducted deep network traffic analysis using Moloch/Arkime. Delivered a comprehensive forensic report covering attack vectors, IoC extraction, and detection signatures.',
     metrics: [],
     tags: ['Security Onion', 'Suricata', 'Moloch/Arkime', 'Forensics', 'Botnet Analysis', 'IDS'],
-    color: '#ff4757',
+    color: '#fda4af',
     links: [],
     category: 'course',
   },
@@ -106,7 +106,7 @@ const PROJECTS: Project[] = [
       'Command-line tool that scans AWS environments for security misconfigurations across IAM, S3, EC2, Security Groups, and more. Generates prioritized findings with remediation steps.',
     metrics: [],
     tags: ['AWS', 'Python', 'CLI', 'Cloud Security', 'IAM', 'S3'],
-    color: '#ffa502',
+    color: '#fcd34d',
     links: [
       { label: 'GitHub', href: 'https://github.com/hell-99/aws-security-scanner', primary: true },
     ],
@@ -124,7 +124,7 @@ const PROJECTS: Project[] = [
       { val: '2', label: 'Platforms' },
     ],
     tags: ['Digital Forensics', 'Anti-Forensics', 'Python', 'MFT', 'Streamlit', 'Windows', 'Linux'],
-    color: '#00ff88',
+    color: '#86efac',
     links: [],
     category: 'course',
     collaborators: 'Kaivalya & Aarya',
@@ -139,7 +139,7 @@ const PROJECTS: Project[] = [
       'Kubernetes threat detection environment integrating Security Onion (network security monitoring), Falco (runtime syscall monitoring), and Filebeat. Detected container escape, privilege escalation, and lateral movement scenarios. Handled SIEM architecture and detection engineering.',
     metrics: [],
     tags: ['Kubernetes', 'Falco', 'Security Onion', 'SIEM', 'Filebeat', 'Container Security'],
-    color: '#00d2ff',
+    color: '#93c5fd',
     links: [],
     category: 'course',
     course: '14-742 AI and Security · CMU',
@@ -153,36 +153,36 @@ const COURSE      = PROJECTS.filter(p => p.category === 'course')
 const SKILLS = [
   {
     category: 'Security',
-    color: '#ff4757',
+    color: '#fda4af',
     items: ['LLM/Agent Security', 'Intrusion Detection', 'Post-Quantum Cryptography', 'Penetration Testing', 'Cloud Security (AWS)', 'Zero Trust', 'MITRE ATT&CK / ATLAS', 'Digital Forensics', 'Anti-Forensics Detection'],
   },
   {
     category: 'AI & ML',
-    color: '#a855f7',
+    color: '#c4b5fd',
     items: ['XGBoost', 'Random Forest', 'Isolation Forest', 'DBSCAN', 'Ensemble Voting', 'LangChain', 'Intent-Action Analysis', 'Behavioral Analysis'],
   },
   {
     category: 'Engineering',
-    color: '#00d2ff',
+    color: '#93c5fd',
     items: ['Python', 'TypeScript', 'FastAPI', 'Flask', 'Streamlit', 'Docker', 'Kubernetes', 'SDN/OpenFlow', 'Mininet', 'PostgreSQL'],
   },
   {
     category: 'Tools & Platforms',
-    color: '#00ff88',
+    color: '#86efac',
     items: ['Security Onion', 'Suricata', 'Falco', 'Moloch/Arkime', 'Groq / Ollama', 'AWS', 'Sigma Rules', 'SIEM', 'Jupyter'],
   },
 ]
 
 const TERMINAL_LINES = [
-  { text: '> whoami', color: '#00ff88', delay: 0 },
-  { text: 'twinkle_kamdar', color: '#e6edf3', delay: 400 },
-  { text: '> cat role.txt', color: '#00ff88', delay: 900 },
-  { text: 'Cybersecurity @ Carnegie Mellon University (INI)', color: '#e6edf3', delay: 1300 },
-  { text: '> ls projects/', color: '#00ff88', delay: 1900 },
-  { text: 'IRIS/  AEGIS/  ZeroSeg/  Mirai/  K8s-Guard/', color: '#00d2ff', delay: 2300 },
-  { text: '> cat focus.txt', color: '#00ff88', delay: 2900 },
-  { text: 'Building security systems for the AI-native world.', color: '#e6edf3', delay: 3300 },
-  { text: '▋', color: '#00ff88', delay: 3800 },
+  { text: '> whoami', color: '#86efac', delay: 0 },
+  { text: 'twinkle_kamdar', color: '#e2e8f0', delay: 400 },
+  { text: '> cat role.txt', color: '#86efac', delay: 900 },
+  { text: 'Cybersecurity @ Carnegie Mellon University (INI)', color: '#e2e8f0', delay: 1300 },
+  { text: '> ls projects/', color: '#86efac', delay: 1900 },
+  { text: 'IRIS/  AEGIS/  ZeroSeg/  Mirai/  K8s-Guard/', color: '#93c5fd', delay: 2300 },
+  { text: '> cat focus.txt', color: '#86efac', delay: 2900 },
+  { text: 'Building security systems for the AI-native world.', color: '#e2e8f0', delay: 3300 },
+  { text: '▋', color: '#86efac', delay: 3800 },
 ]
 
 // ── Components ───────────────────────────────────────────────────────────────
@@ -247,7 +247,7 @@ function FlipCard({ project }: { project: Project }) {
 
   return (
     <div className="rounded-xl border overflow-hidden flex flex-col"
-      style={{ background: '#0d1117', borderTop: `3px solid ${project.color}`, borderLeft: '1px solid #21262d', borderRight: '1px solid #21262d', borderBottom: '1px solid #21262d' }}>
+      style={{ background: '#161f35', borderTop: `3px solid ${project.color}`, borderLeft: '1px solid #2a3a5c', borderRight: '1px solid #2a3a5c', borderBottom: '1px solid #2a3a5c' }}>
 
       {/* ── Flipping area ── */}
       <div
@@ -286,7 +286,7 @@ function FlipCard({ project }: { project: Project }) {
                 {project.metrics.length > 0 && (
                   <div className={`grid grid-cols-${Math.min(project.metrics.length, 4)} gap-2 mb-4`}>
                     {project.metrics.map(m => (
-                      <div key={m.label} className="text-center p-2 rounded-lg" style={{ background: '#060912' }}>
+                      <div key={m.label} className="text-center p-2 rounded-lg" style={{ background: '#0d1220' }}>
                         <div className="font-mono font-bold" style={{ color: project.color, fontSize: '0.95rem' }}>{m.val}</div>
                         <div className="text-muted" style={{ fontSize: '0.65rem' }}>{m.label}</div>
                       </div>
@@ -382,13 +382,24 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 py-20 w-full">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="font-mono text-green text-sm mb-4 tracking-widest uppercase">
-                &gt; Available for Summer 2027 Internships
+              {/* Avatar */}
+              <div className="flex items-center gap-5 mb-6">
+                <div className="avatar-ring" style={{ width: '80px', height: '80px', flexShrink: 0 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="https://avatars.githubusercontent.com/u/167800111?v=4"
+                    alt="Twinkle Kamdar"
+                  />
+                </div>
+                <div className="font-mono text-green text-sm tracking-widest uppercase leading-snug">
+                  &gt; Available for<br />Summer 2027 Internships
+                </div>
               </div>
+
               <h1 className="text-5xl font-bold leading-tight mb-4">
                 <span className="text-text">Twinkle </span>
                 <span style={{
-                  background: 'linear-gradient(135deg, #00ff88, #00d2ff)',
+                  background: 'linear-gradient(135deg, #86efac, #93c5fd, #c4b5fd)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}>Kamdar</span>
@@ -408,7 +419,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-4">
                 <a href="#projects"
                   className="px-6 py-3 rounded-lg font-mono font-medium text-bg transition-opacity hover:opacity-90"
-                  style={{ background: '#00ff88' }}>
+                  style={{ background: '#86efac' }}>
                   View Projects
                 </a>
                 <a href="https://github.com/hell-99" target="_blank" rel="noopener noreferrer"
@@ -428,10 +439,10 @@ export default function Home() {
 
           <div ref={addRef} className="fade-section grid grid-cols-2 md:grid-cols-4 gap-4 mt-20">
             {[
-              { val: '7+',       label: 'Security Projects', color: '#00ff88' },
-              { val: 'CMU INI',  label: 'Graduate Program',  color: '#00d2ff' },
-              { val: 'Dec 2026', label: 'Graduating',         color: '#a855f7' },
-              { val: 'Open',     label: 'To Opportunities',   color: '#ffa502' },
+              { val: '7+',       label: 'Security Projects', color: '#86efac' },
+              { val: 'CMU INI',  label: 'Graduate Program',  color: '#93c5fd' },
+              { val: 'Dec 2026', label: 'Graduating',         color: '#c4b5fd' },
+              { val: 'Open',     label: 'To Opportunities',   color: '#fcd34d' },
             ].map(s => (
               <div key={s.label} className="card p-6 text-center">
                 <div className="font-mono font-bold text-2xl mb-1" style={{ color: s.color }}>{s.val}</div>
@@ -482,7 +493,7 @@ export default function Home() {
       </section>
 
       {/* ── Skills ── */}
-      <section id="skills" className="py-24" style={{ background: '#0d1117' }}>
+      <section id="skills" className="py-24" style={{ background: '#111827' }}>
         <div className="max-w-6xl mx-auto px-6">
           <div ref={addRef} className="fade-section">
             <SectionHeader
@@ -519,10 +530,10 @@ export default function Home() {
             <div className="card p-8 text-left mb-8">
               <div className="font-mono text-sm space-y-4">
                 {[
-                  { label: 'Email',    val: 'tkamdar@andrew.cmu.edu',        href: 'mailto:tkamdar@andrew.cmu.edu',        color: '#00ff88' },
-                  { label: 'LinkedIn', val: 'linkedin.com/in/twinklekamdar', href: 'https://linkedin.com/in/twinklekamdar', color: '#00d2ff' },
-                  { label: 'GitHub',   val: 'github.com/hell-99',            href: 'https://github.com/hell-99',           color: '#a855f7' },
-                  { label: 'IRIS Demo',val: 'iris-hell99.streamlit.app',     href: 'https://iris-hell99.streamlit.app',    color: '#ffa502' },
+                  { label: 'Email',    val: 'tkamdar@andrew.cmu.edu',        href: 'mailto:tkamdar@andrew.cmu.edu',        color: '#86efac' },
+                  { label: 'LinkedIn', val: 'linkedin.com/in/twinklekamdar', href: 'https://linkedin.com/in/twinklekamdar', color: '#93c5fd' },
+                  { label: 'GitHub',   val: 'github.com/hell-99',            href: 'https://github.com/hell-99',           color: '#c4b5fd' },
+                  { label: 'IRIS Demo',val: 'iris-hell99.streamlit.app',     href: 'https://iris-hell99.streamlit.app',    color: '#fcd34d' },
                 ].map(c => (
                   <div key={c.label} className="flex items-center gap-4">
                     <span className="text-muted w-20">{c.label}</span>
@@ -537,7 +548,7 @@ export default function Home() {
             </div>
             <a href="mailto:tkamdar@andrew.cmu.edu"
               className="inline-block px-10 py-4 rounded-lg font-mono font-bold text-bg transition-opacity hover:opacity-90 text-lg"
-              style={{ background: 'linear-gradient(135deg, #00ff88, #00d2ff)' }}>
+              style={{ background: 'linear-gradient(135deg, #86efac, #93c5fd)' }}>
               Say Hello →
             </a>
           </div>
