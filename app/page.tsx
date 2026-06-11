@@ -112,6 +112,57 @@ const SKILLS = [
   { label: 'TypeScript / Next.js',      color: '#fffbeb', text: '#b45309' },
 ]
 
+type Exp = { company: string; role: string; period: string; location: string; color: string; bg: string; bullets: string[]; tags: string[] }
+type Edu = { school: string; degree: string; period: string; location: string; color: string; bg: string; gpa?: string; detail: string }
+
+const EXPERIENCE: Exp[] = [
+  {
+    company: 'Floatbot.AI', role: 'Security Analyst Intern', period: 'May 2026 – Present',
+    location: 'Remote · Milpitas, CA', color: '#7c3aed', bg: '#f5f3ff',
+    bullets: [
+      'Building PCI DSS v4.0.1 compliance infrastructure — controls tracker, evidence mapping, and scoping documents across GCP US, Azure UAE, and GCP India CDE environments',
+      'Completed Coalition cyber insurance checklist across all domains: access control, SAT, endpoint security, network controls, and incident response',
+      'Drafted System Security Plan for FTI (Federal Tax Information) protection with network architecture diagrams in draw.io',
+      'Produced WAF vendor comparison, TWFG vendor security questionnaire responses, and IRS Pub 1075 training materials with Microsoft Forms quiz',
+    ],
+    tags: ['PCI DSS v4.0.1', 'GCP', 'Azure', 'IRS Pub 1075', 'Compliance', 'SIEM'],
+  },
+  {
+    company: 'Silver Touch Technologies', role: 'SOC Intern', period: 'May – Jul 2024',
+    location: 'India', color: '#0369a1', bg: '#f0f9ff',
+    bullets: [
+      'Triaged security alerts and monitored network traffic using Wireshark, tshark, and Moloch/Arkime in a 24/7 SOC environment',
+      'Supported VAPT assessments and tracked 50+ CVEs across internal ticketing systems',
+      'Worked with SIEM tooling and Suricata IDS/IPS rules for threat detection and documentation',
+    ],
+    tags: ['SIEM', 'Suricata', 'Wireshark', 'VAPT', 'CVE Tracking', 'Moloch/Arkime'],
+  },
+  {
+    company: 'PDEU — Deepfake Forensics Lab', role: 'Research Assistant', period: '2024 – 2025',
+    location: 'Gandhinagar, India', color: '#be123c', bg: '#fff1f2',
+    bullets: [
+      'Assisted faculty with literature review and dataset management for deepfake detection research',
+      'Maintained experimental records and supported preparation of research reports and presentations',
+    ],
+    tags: ['Deepfake Detection', 'Research', 'Python'],
+  },
+]
+
+const EDUCATION: Edu[] = [
+  {
+    school: 'Carnegie Mellon University', degree: 'M.S. Information Security · INI',
+    period: 'Aug 2025 – Dec 2026', location: 'Pittsburgh, PA',
+    color: '#be185d', bg: '#fce7f3',
+    detail: 'Intro to Information Security · Host-Based Forensics · Security in Networked Systems · AI & Security · Cloud Security · Network Forensics',
+  },
+  {
+    school: 'Pandit Deendayal Energy University', degree: 'B.Tech Computer Science Engineering',
+    period: 'Jul 2021 – May 2025', location: 'Gandhinagar, India',
+    color: '#b45309', bg: '#fffbeb', gpa: '9.44 / 10',
+    detail: 'Cultural Club — Event Manager · Society of Mathematics · Zaayka Food & Culture Club',
+  },
+]
+
 // ── Cursor ────────────────────────────────────────────────────────────────────
 
 function Cursor() {
@@ -169,7 +220,7 @@ function Nav() {
       }}>
         <span style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1.3rem', background: 'linear-gradient(135deg,#f472b6,#8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>tk</span>
         <div style={{ display: 'flex', gap: '32px' }}>
-          {['about','projects','skills','contact'].map(s => (
+          {['about','experience','projects','skills','contact'].map(s => (
             <a key={s} href={`#${s}`} style={{ fontSize: '0.875rem', fontWeight: 500, color: '#6b7280', textDecoration: 'none', textTransform: 'capitalize', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#f472b6')}
               onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}>{s}</a>
@@ -392,6 +443,63 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+        {/* ── Experience & Education ── */}
+        <section id="experience" style={{ padding: '100px 24px' }}>
+          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+
+            <div ref={addFade} className="fade-up" style={{ marginBottom: '48px' }}>
+              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#f472b6', fontWeight: 700 }}>✦ experience</span>
+              <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.2rem)', letterSpacing: '-0.02em', marginTop: '8px', marginBottom: '8px' }}>Where I&apos;ve Worked</h2>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '80px' }}>
+              {EXPERIENCE.map((exp, i) => (
+                <div key={i} ref={addFade} className="fade-up pcard" style={{ transitionDelay: `${i*0.08}s`, borderLeft: `4px solid ${exp.color}` }}>
+                  <div style={{ padding: '28px 32px', background: exp.bg }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px', marginBottom: '4px' }}>
+                      <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1.25rem', color: exp.color }}>{exp.company}</div>
+                      <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.68rem', color: `${exp.color}99`, padding: '4px 12px', borderRadius: '999px', background: `${exp.color}12`, border: `1px solid ${exp.color}25`, whiteSpace: 'nowrap' }}>{exp.period}</span>
+                    </div>
+                    <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.72rem', fontWeight: 600, color: '#6b7280', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{exp.role} · {exp.location}</div>
+                    <ul style={{ paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
+                      {exp.bullets.map((b, j) => (
+                        <li key={j} style={{ fontSize: '0.9rem', color: '#4b5563', lineHeight: 1.7 }}>{b}</li>
+                      ))}
+                    </ul>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      {exp.tags.map(t => (
+                        <span key={t} style={{ padding: '3px 10px', borderRadius: '999px', fontSize: '0.65rem', fontFamily: 'JetBrains Mono', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', background: `${exp.color}12`, color: exp.color, border: `1px solid ${exp.color}30` }}>{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div ref={addFade} className="fade-up" style={{ marginBottom: '32px' }}>
+              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8b5cf6', fontWeight: 700 }}>✦ education</span>
+              <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.2rem)', letterSpacing: '-0.02em', marginTop: '8px' }}>Academic Background</h2>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: '20px' }}>
+              {EDUCATION.map((edu, i) => (
+                <div key={i} ref={addFade} className="fade-up pcard" style={{ transitionDelay: `${i*0.1}s`, borderLeft: `4px solid ${edu.color}` }}>
+                  <div style={{ padding: '28px 32px', background: edu.bg }}>
+                    <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1.2rem', color: edu.color, marginBottom: '4px' }}>{edu.school}</div>
+                    <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.72rem', fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px' }}>{edu.degree}</div>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '14px' }}>
+                      <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', color: edu.color, padding: '3px 12px', borderRadius: '999px', background: `${edu.color}12`, border: `1px solid ${edu.color}25` }}>{edu.period}</span>
+                      <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', color: '#9ca3af', padding: '3px 12px', borderRadius: '999px', background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.07)' }}>{edu.location}</span>
+                      {edu.gpa && <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', color: edu.color, padding: '3px 12px', borderRadius: '999px', background: `${edu.color}15`, border: `1px solid ${edu.color}30`, fontWeight: 700 }}>GPA {edu.gpa}</span>}
+                    </div>
+                    <p style={{ fontSize: '0.82rem', color: '#6b7280', lineHeight: 1.8 }}>{edu.detail}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* ── Featured Projects ── */}
         <section id="projects" style={{ padding: '100px 24px' }}>
