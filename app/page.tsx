@@ -238,62 +238,119 @@ function Nav() {
   )
 }
 
-function ProjectCard({ project }: { project: Project }) {
+function FlipCard({ project }: { project: Project }) {
+  const [flipped, setFlipped] = useState(false)
+
   return (
-    <div className="card p-8 h-full flex flex-col" style={{ borderTop: `3px solid ${project.color}` }}>
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <div className="flex items-center gap-3 mb-1">
-            <span className="font-mono font-bold text-2xl" style={{ color: project.color }}>
-              {project.name}
-            </span>
-          </div>
-          <p className="text-muted text-xs font-mono uppercase tracking-widest">{project.full}</p>
-        </div>
-      </div>
-
-      {project.course && (
-        <p className="text-xs font-mono mb-3" style={{ color: project.color, opacity: 0.7 }}>
-          {project.course}{project.collaborators ? ` · with ${project.collaborators}` : ''}
-        </p>
-      )}
-
-      <p className="text-text font-medium mb-3">{project.tagline}</p>
-      <p className="text-muted text-sm leading-relaxed mb-5">{project.description}</p>
-
-      {project.metrics.length > 0 && (
-        <div className={`grid grid-cols-${project.metrics.length} gap-3 mb-5 p-4 rounded-lg`}
-          style={{ background: '#060912' }}>
-          {project.metrics.map(m => (
-            <div key={m.label} className="text-center">
-              <div className="font-mono font-bold text-lg" style={{ color: project.color }}>{m.val}</div>
-              <div className="text-muted text-xs">{m.label}</div>
+    <div
+      className="cursor-pointer"
+      style={{ perspective: '1000px', minHeight: '320px' }}
+      onClick={() => setFlipped(f => !f)}
+    >
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          minHeight: '320px',
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+          transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        }}
+      >
+        {/* Front */}
+        <div
+          style={{
+            position: 'absolute', inset: 0,
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
+        >
+          <div className="h-full rounded-xl border border-border flex flex-col justify-between p-8"
+            style={{
+              background: '#0d1117',
+              borderTop: `3px solid ${project.color}`,
+              minHeight: '320px',
+            }}>
+            <div>
+              <span className="font-mono font-bold text-3xl block mb-2" style={{ color: project.color }}>
+                {project.name}
+              </span>
+              <p className="text-muted text-xs font-mono uppercase tracking-widest mb-4">{project.full}</p>
+              <p className="text-text text-base leading-relaxed">{project.tagline}</p>
             </div>
-          ))}
-        </div>
-      )}
 
-      <div className="flex flex-wrap gap-2 mb-5">
-        {project.tags.map(t => (
-          <span key={t} className="badge bg-surface text-muted border border-border">{t}</span>
-        ))}
+            {project.metrics.length > 0 && (
+              <div className={`grid grid-cols-${Math.min(project.metrics.length, 4)} gap-3 mt-6`}>
+                {project.metrics.map(m => (
+                  <div key={m.label} className="text-center p-3 rounded-lg" style={{ background: '#060912' }}>
+                    <div className="font-mono font-bold text-lg" style={{ color: project.color }}>{m.val}</div>
+                    <div className="text-muted text-xs mt-1">{m.label}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-6 flex items-center justify-between">
+              {project.course
+                ? <span className="text-xs font-mono" style={{ color: project.color, opacity: 0.6 }}>{project.course}</span>
+                : <span />
+              }
+              <span className="text-muted text-xs font-mono">click to flip →</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Back */}
+        <div
+          style={{
+            position: 'absolute', inset: 0,
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+          }}
+        >
+          <div className="h-full rounded-xl border flex flex-col p-8"
+            style={{
+              background: '#0d1117',
+              borderColor: project.color,
+              borderWidth: '1px',
+              minHeight: '320px',
+            }}>
+            <p className="text-muted text-sm leading-relaxed mb-5 flex-1">{project.description}</p>
+
+            {project.collaborators && (
+              <p className="text-xs font-mono mb-4" style={{ color: project.color, opacity: 0.7 }}>
+                with {project.collaborators}
+              </p>
+            )}
+
+            <div className="flex flex-wrap gap-2 mb-5">
+              {project.tags.map(t => (
+                <span key={t} className="badge bg-surface text-muted border border-border">{t}</span>
+              ))}
+            </div>
+
+            {project.links.length > 0 && (
+              <div className="flex flex-wrap gap-3" onClick={e => e.stopPropagation()}>
+                {project.links.map(l => (
+                  <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+                    className={`px-4 py-2 rounded-lg text-sm font-mono font-medium transition-all ${
+                      l.primary
+                        ? 'text-bg hover:opacity-90'
+                        : 'border border-border text-muted hover:text-green'
+                    }`}
+                    style={l.primary ? { background: project.color } : {}}>
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            )}
+
+            <span className="text-muted text-xs font-mono mt-4 self-end">click to flip back ←</span>
+          </div>
+        </div>
       </div>
-
-      {project.links.length > 0 && (
-        <div className="flex flex-wrap gap-3 mt-auto">
-          {project.links.map(l => (
-            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-              className={`px-4 py-2 rounded-lg text-sm font-mono font-medium transition-all ${
-                l.primary
-                  ? 'text-bg hover:opacity-90'
-                  : 'border border-border text-muted hover:border-green hover:text-green'
-              }`}
-              style={l.primary ? { background: project.color } : {}}>
-              {l.label}
-            </a>
-          ))}
-        </div>
-      )}
     </div>
   )
 }
@@ -410,7 +467,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6 mb-20">
             {FEATURED.map((p, i) => (
               <div key={p.id} ref={addRef} className="fade-section" style={{ transitionDelay: `${i * 0.1}s` }}>
-                <ProjectCard project={p} />
+                <FlipCard project={p} />
               </div>
             ))}
           </div>
@@ -426,7 +483,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6">
             {COURSE.map((p, i) => (
               <div key={p.id} ref={addRef} className="fade-section" style={{ transitionDelay: `${i * 0.1}s` }}>
-                <ProjectCard project={p} />
+                <FlipCard project={p} />
               </div>
             ))}
           </div>
