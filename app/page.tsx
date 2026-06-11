@@ -434,18 +434,11 @@ export default function Home() {
                 {/* Pixel glasses */}
                 {glassesOn && <>
                   <div style={{
-                    position: 'absolute', top: '32%', left: '47%', width: '38%',
+                    position: 'absolute', top: '32%', left: '47%', width: '28%',
                     animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
                   }}>
-                    <svg viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', display: 'block' }}>
-                      <rect x="4" y="6" width="62" height="36" rx="2" fill="#0a0a0a"/>
-                      <rect x="94" y="6" width="62" height="36" rx="2" fill="#0a0a0a"/>
-                      <rect x="66" y="18" width="28" height="12" fill="#0a0a0a"/>
-                      <rect x="0" y="18" width="4" height="12" fill="#0a0a0a"/>
-                      <rect x="156" y="18" width="4" height="12" fill="#0a0a0a"/>
-                      <rect x="10" y="12" width="22" height="14" rx="1" fill="#1f1f1f"/>
-                      <rect x="100" y="12" width="22" height="14" rx="1" fill="#1f1f1f"/>
-                    </svg>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/glasses.png" alt="" style={{ width: '100%', display: 'block', imageRendering: 'pixelated' }} />
                   </div>
                   <div style={{
                     position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
