@@ -183,7 +183,7 @@ function Cursor() {
     return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf) }
   }, [])
 
-  return <><div ref={dotRef} className="cursor-dot" /><div ref={ringRef} className="cursor-ring" /></>
+  return <><div ref={dotRef} className="cursor-dot">🐾</div><div ref={ringRef} className="cursor-ring" /></>
 }
 
 // ── Nav ───────────────────────────────────────────────────────────────────────
