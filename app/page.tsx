@@ -434,7 +434,7 @@ export default function Home() {
                 {/* Pixel glasses */}
                 {glassesOn && <>
                   <div style={{
-                    position: 'absolute', top: '20%', left: '50%', width: '60%',
+                    position: 'absolute', top: '40%', left: '50%', width: '60%',
                     animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
                   }}>
                     <svg viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', display: 'block' }}>
