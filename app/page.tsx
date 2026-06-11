@@ -243,133 +243,104 @@ function Nav() {
 
 function FlipCard({ project }: { project: Project }) {
   const [flipped, setFlipped] = useState(false)
+  const FLIP_HEIGHT = 380
 
   return (
-    <div
-      className="cursor-pointer"
-      style={{ perspective: '1000px', minHeight: '320px' }}
-      onClick={() => setFlipped(f => !f)}
-    >
+    <div className="rounded-xl border overflow-hidden flex flex-col"
+      style={{ background: '#0d1117', borderTop: `3px solid ${project.color}`, borderLeft: '1px solid #21262d', borderRight: '1px solid #21262d', borderBottom: '1px solid #21262d' }}>
+
+      {/* ── Flipping area ── */}
       <div
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          minHeight: '320px',
-          transformStyle: 'preserve-3d',
-          transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-          transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-        }}
+        className="cursor-pointer"
+        style={{ perspective: '1000px', height: `${FLIP_HEIGHT}px`, flexShrink: 0 }}
+        onClick={() => setFlipped(f => !f)}
       >
-        {/* Front */}
-        <div
-          style={{
-            position: 'absolute', inset: 0,
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-          }}
-        >
-          <div className="h-full rounded-xl border border-border flex flex-col justify-between overflow-hidden"
-            style={{
-              background: '#0d1117',
-              borderTop: `3px solid ${project.color}`,
-              minHeight: '320px',
-            }}>
+        <div style={{
+          position: 'relative', width: '100%', height: '100%',
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.6s cubic-bezier(0.4,0,0.2,1)',
+          transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        }}>
 
-            {/* Screenshot */}
-            {project.screenshot && (
-              <div className="w-full overflow-hidden" style={{ height: '160px' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={project.screenshot}
-                  alt={`${project.name} screenshot`}
-                  className="w-full h-full object-cover object-top"
-                  style={{ opacity: 0.85 }}
-                />
-              </div>
-            )}
+          {/* Front */}
+          <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', overflow: 'hidden' }}>
+            <div className="h-full flex flex-col">
+              {project.screenshot ? (
+                <div className="w-full overflow-hidden" style={{ height: '160px', flexShrink: 0 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={project.screenshot} alt={`${project.name} screenshot`}
+                    className="w-full h-full object-cover object-top" style={{ opacity: 0.88 }} />
+                </div>
+              ) : null}
 
-            <div className="p-8 flex flex-col justify-between flex-1">
-              <div>
-                <span className="font-mono font-bold text-3xl block mb-2" style={{ color: project.color }}>
+              <div className="p-6 flex flex-col flex-1">
+                <span className="font-mono font-bold text-3xl block mb-1" style={{ color: project.color }}>
                   {project.name}
                 </span>
-                <p className="text-muted text-xs font-mono uppercase tracking-widest mb-4">{project.full}</p>
-                <p className="text-text text-base leading-relaxed">{project.tagline}</p>
-              </div>
+                <p className="text-muted text-xs font-mono uppercase tracking-widest mb-3">{project.full}</p>
+                {project.course && (
+                  <p className="text-xs font-mono mb-3" style={{ color: project.color, opacity: 0.6 }}>{project.course}</p>
+                )}
+                <p className="text-text text-sm leading-relaxed mb-4">{project.tagline}</p>
 
-              {project.metrics.length > 0 && (
-                <div className={`grid grid-cols-${Math.min(project.metrics.length, 4)} gap-3 mt-6`}>
-                  {project.metrics.map(m => (
-                    <div key={m.label} className="text-center p-3 rounded-lg" style={{ background: '#060912' }}>
-                      <div className="font-mono font-bold text-lg" style={{ color: project.color }}>{m.val}</div>
-                      <div className="text-muted text-xs mt-1">{m.label}</div>
-                    </div>
-                  ))}
+                {project.metrics.length > 0 && (
+                  <div className={`grid grid-cols-${Math.min(project.metrics.length, 4)} gap-2 mb-4`}>
+                    {project.metrics.map(m => (
+                      <div key={m.label} className="text-center p-2 rounded-lg" style={{ background: '#060912' }}>
+                        <div className="font-mono font-bold" style={{ color: project.color, fontSize: '0.95rem' }}>{m.val}</div>
+                        <div className="text-muted" style={{ fontSize: '0.65rem' }}>{m.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-auto flex justify-end">
+                  <span className="text-xs font-mono px-3 py-1 rounded-full border border-border text-muted">
+                    ↺ flip to know more
+                  </span>
                 </div>
-              )}
-
-              <div className="mt-6 flex items-center justify-between">
-                {project.course
-                  ? <span className="text-xs font-mono" style={{ color: project.color, opacity: 0.6 }}>{project.course}</span>
-                  : <span />
-                }
-                <span className="text-muted text-xs font-mono">click to flip →</span>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Back */}
-        <div
-          style={{
-            position: 'absolute', inset: 0,
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)',
-          }}
-        >
-          <div className="h-full rounded-xl border flex flex-col p-8"
-            style={{
-              background: '#0d1117',
-              borderColor: project.color,
-              borderWidth: '1px',
-              minHeight: '320px',
-            }}>
-            <p className="text-muted text-sm leading-relaxed mb-5 flex-1">{project.description}</p>
-
-            {project.collaborators && (
-              <p className="text-xs font-mono mb-4" style={{ color: project.color, opacity: 0.7 }}>
-                with {project.collaborators}
-              </p>
-            )}
-
-            <div className="flex flex-wrap gap-2 mb-5">
-              {project.tags.map(t => (
-                <span key={t} className="badge bg-surface text-muted border border-border">{t}</span>
-              ))}
-            </div>
-
-            {project.links.length > 0 && (
-              <div className="flex flex-wrap gap-3" onClick={e => e.stopPropagation()}>
-                {project.links.map(l => (
-                  <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                    className={`px-4 py-2 rounded-lg text-sm font-mono font-medium transition-all ${
-                      l.primary
-                        ? 'text-bg hover:opacity-90'
-                        : 'border border-border text-muted hover:text-green'
-                    }`}
-                    style={l.primary ? { background: project.color } : {}}>
-                    {l.label}
-                  </a>
+          {/* Back */}
+          <div style={{ position: 'absolute', inset: 0, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)', overflow: 'hidden' }}>
+            <div className="h-full p-6 flex flex-col" style={{ borderLeft: `2px solid ${project.color}20` }}>
+              <p className="text-muted text-sm leading-relaxed flex-1 overflow-auto">{project.description}</p>
+              {project.collaborators && (
+                <p className="text-xs font-mono mt-3" style={{ color: project.color, opacity: 0.7 }}>
+                  with {project.collaborators}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-2 mt-4">
+                {project.tags.map(t => (
+                  <span key={t} className="badge bg-surface text-muted border border-border">{t}</span>
                 ))}
               </div>
-            )}
-
-            <span className="text-muted text-xs font-mono mt-4 self-end">click to flip back ←</span>
+              <div className="mt-4 flex justify-end">
+                <span className="text-xs font-mono px-3 py-1 rounded-full border border-border text-muted">
+                  ↺ flip back
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* ── Always-visible links ── */}
+      {project.links.length > 0 && (
+        <div className="px-6 py-4 border-t border-border flex flex-wrap gap-3">
+          {project.links.map(l => (
+            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+              className={`px-4 py-2 rounded-lg text-sm font-mono font-medium transition-all ${
+                l.primary ? 'text-bg hover:opacity-90' : 'border border-border text-muted hover:border-green hover:text-green'
+              }`}
+              style={l.primary ? { background: project.color } : {}}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
