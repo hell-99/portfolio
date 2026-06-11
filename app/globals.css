@@ -20,15 +20,14 @@ a, button { cursor: none; }
 /* ── Custom cursor ─────────────────────── */
 .cursor-dot {
   position: fixed;
-  width: 24px; height: 24px;
+  width: 8px; height: 8px;
+  background: #f472b6;
+  border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  font-size: 20px;
-  line-height: 1;
-  filter: drop-shadow(0 0 4px #f472b6);
-  transition: transform 0.1s;
-  user-select: none;
+  box-shadow: 0 0 10px #f472b680;
+  transition: background 0.2s;
 }
 .cursor-ring {
   position: fixed;

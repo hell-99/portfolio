@@ -183,7 +183,7 @@ function Cursor() {
     return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf) }
   }, [])
 
-  return <><div ref={dotRef} className="cursor-dot">🐾</div><div ref={ringRef} className="cursor-ring" /></>
+  return <><div ref={dotRef} className="cursor-dot" /><div ref={ringRef} className="cursor-ring" /></>
 }
 
 // ── Nav ───────────────────────────────────────────────────────────────────────
@@ -438,7 +438,7 @@ export default function Home() {
                     animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/glasses.png" alt="" style={{ width: '100%', display: 'block', imageRendering: 'pixelated', mixBlendMode: 'multiply' }} />
+                    <img src="/glasses.png" alt="" style={{ width: '100%', display: 'block', imageRendering: 'pixelated', mixBlendMode: 'multiply', transform: 'rotate(6deg)' }} />
                   </div>
                   <div style={{
                     position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
