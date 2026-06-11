@@ -91,75 +91,67 @@ const COURSE   = PROJECTS.filter(p => p.category === 'course')
 
 const MARQUEE_ITEMS = ['LLM Security', 'Post-Quantum Crypto', 'IDS/IPS', 'Digital Forensics', 'Zero Trust', 'SIEM', 'XGBoost', 'Kubernetes', 'SDN/OpenFlow', 'Cloud Security', 'MITRE ATT&CK', 'Behavioral Analysis']
 
-const SKILLS = [
-  { label: 'LLM / Agent Security',     color: '#fce7f3', text: '#be185d' },
-  { label: 'Intrusion Detection',       color: '#f5f3ff', text: '#7c3aed' },
-  { label: 'Post-Quantum Cryptography', color: '#ecfdf5', text: '#15803d' },
-  { label: 'Digital Forensics',         color: '#eff6ff', text: '#1d4ed8' },
-  { label: 'Cloud Security (AWS)',      color: '#fffbeb', text: '#b45309' },
-  { label: 'Zero Trust Architecture',   color: '#fff1f2', text: '#be123c' },
-  { label: 'MITRE ATT&CK / ATLAS',      color: '#fdf4ff', text: '#7e22ce' },
-  { label: 'Python',                    color: '#fce7f3', text: '#be185d' },
-  { label: 'XGBoost / Random Forest',   color: '#ecfdf5', text: '#15803d' },
-  { label: 'Isolation Forest / DBSCAN', color: '#eff6ff', text: '#1d4ed8' },
-  { label: 'LangChain',                 color: '#f5f3ff', text: '#7c3aed' },
-  { label: 'FastAPI / Flask',           color: '#fffbeb', text: '#b45309' },
-  { label: 'Docker / Kubernetes',       color: '#eff6ff', text: '#1d4ed8' },
-  { label: 'SDN / OpenFlow / Mininet',  color: '#ecfdf5', text: '#15803d' },
-  { label: 'Security Onion / Suricata', color: '#fff1f2', text: '#be123c' },
-  { label: 'Streamlit',                 color: '#fce7f3', text: '#be185d' },
-  { label: 'SIEM / Sigma Rules',        color: '#fdf4ff', text: '#7e22ce' },
-  { label: 'TypeScript / Next.js',      color: '#fffbeb', text: '#b45309' },
+type SkillCat = { label: string; color: string; bg: string; skills: string[] }
+const SKILL_CATEGORIES: SkillCat[] = [
+  { label: 'Languages',               color: '#be185d', bg: '#fce7f3', skills: ['Python', 'C', 'C++', 'Java', 'SQL', 'Bash'] },
+  { label: 'Security Tools',          color: '#7c3aed', bg: '#f5f3ff', skills: ['Wireshark', 'tshark', 'Suricata', 'Security Onion', 'Moloch/Arkime', 'Falco', 'Filebeat', 'ExifTool', 'KAPE', 'MFTECmd', 'analyzeMFT', 'python-evtx', 'pfSense', 'FortiGate'] },
+  { label: 'ML / AI',                 color: '#0369a1', bg: '#f0f9ff', skills: ['XGBoost', 'Random Forest', 'Isolation Forest', 'DBSCAN', 'scikit-learn', 'LangChain', 'LangGraph', 'Groq API', 'Ollama', 'Qwen3'] },
+  { label: 'Cloud & Infrastructure',  color: '#15803d', bg: '#ecfdf5', skills: ['GCP', 'Azure', 'AWS', 'Docker', 'Kubernetes', 'Colima', 'Mininet', 'GNS3', 'OpenFlow/Ryu', 'Faucet/OVS', 'Ansible', 'Salt'] },
+  { label: 'Web & APIs',              color: '#b45309', bg: '#fffbeb', skills: ['FastAPI', 'Flask', 'Streamlit', 'Plotly', 'Next.js', 'TypeScript'] },
+  { label: 'Frameworks & Standards',  color: '#be123c', bg: '#fff1f2', skills: ['NIST CSF', 'PCI DSS v4.0.1', 'SOC 2', 'MITRE ATT&CK', 'MITRE ATLAS', 'CVSS', 'CWE', 'IRS Pub 1075', 'SSAE18'] },
+  { label: 'Digital Forensics',       color: '#7e22ce', bg: '#fdf4ff', skills: ['Windows Forensics', 'Linux Forensics', 'MFT Analysis', 'EVTX Analysis', 'Android Forensics', 'Timeline Reconstruction', 'Anti-Forensics Detection'] },
+  { label: 'Compliance',              color: '#0891b2', bg: '#ecfeff', skills: ['Scrut', 'Coalition', 'draw.io', 'Microsoft Forms'] },
 ]
 
-type Exp = { company: string; role: string; period: string; location: string; color: string; bg: string; bullets: string[]; tags: string[] }
-type Edu = { school: string; degree: string; period: string; location: string; color: string; bg: string; gpa?: string; detail: string }
+type TimelineItem = { type: 'work' | 'education'; org: string; role: string; period: string; location: string; color: string; bg: string; bullets?: string[]; tags: string[]; gpa?: string; detail?: string }
 
-const EXPERIENCE: Exp[] = [
+const TIMELINE: TimelineItem[] = [
   {
-    company: 'Floatbot.AI', role: 'Security Analyst Intern', period: 'May 2026 – Present',
-    location: 'Remote · Milpitas, CA', color: '#7c3aed', bg: '#f5f3ff',
+    type: 'work', org: 'Floatbot.AI', role: 'Security Analyst Intern',
+    period: 'May 2026 – Present', location: 'Remote · Milpitas, CA',
+    color: '#7c3aed', bg: '#f5f3ff',
     bullets: [
       'Building PCI DSS v4.0.1 compliance infrastructure — controls tracker, evidence mapping, and scoping documents across GCP US, Azure UAE, and GCP India CDE environments',
       'Completed Coalition cyber insurance checklist across all domains: access control, SAT, endpoint security, network controls, and incident response',
-      'Drafted System Security Plan for FTI (Federal Tax Information) protection with network architecture diagrams in draw.io',
-      'Produced WAF vendor comparison, TWFG vendor security questionnaire responses, and IRS Pub 1075 training materials with Microsoft Forms quiz',
+      'Drafted System Security Plan for FTI protection with network architecture diagrams in draw.io',
+      'Produced WAF vendor comparison, TWFG security questionnaire responses, and IRS Pub 1075 training materials',
     ],
-    tags: ['PCI DSS v4.0.1', 'GCP', 'Azure', 'IRS Pub 1075', 'Compliance', 'SIEM'],
+    tags: ['PCI DSS v4.0.1', 'GCP', 'Azure', 'IRS Pub 1075', 'Compliance'],
   },
   {
-    company: 'Silver Touch Technologies', role: 'SOC Intern', period: 'May – Jul 2024',
-    location: 'India', color: '#0369a1', bg: '#f0f9ff',
-    bullets: [
-      'Triaged security alerts and monitored network traffic using Wireshark, tshark, and Moloch/Arkime in a 24/7 SOC environment',
-      'Supported VAPT assessments and tracked 50+ CVEs across internal ticketing systems',
-      'Worked with SIEM tooling and Suricata IDS/IPS rules for threat detection and documentation',
-    ],
-    tags: ['SIEM', 'Suricata', 'Wireshark', 'VAPT', 'CVE Tracking', 'Moloch/Arkime'],
-  },
-  {
-    company: 'PDEU — Deepfake Forensics Lab', role: 'Research Assistant', period: '2024 – 2025',
-    location: 'Gandhinagar, India', color: '#be123c', bg: '#fff1f2',
-    bullets: [
-      'Assisted faculty with literature review and dataset management for deepfake detection research',
-      'Maintained experimental records and supported preparation of research reports and presentations',
-    ],
-    tags: ['Deepfake Detection', 'Research', 'Python'],
-  },
-]
-
-const EDUCATION: Edu[] = [
-  {
-    school: 'Carnegie Mellon University', degree: 'M.S. Information Security · INI',
+    type: 'education', org: 'Carnegie Mellon University', role: 'M.S. Information Security · INI',
     period: 'Aug 2025 – Dec 2026', location: 'Pittsburgh, PA',
     color: '#be185d', bg: '#fce7f3',
     detail: 'Intro to Information Security · Host-Based Forensics · Security in Networked Systems · AI & Security · Cloud Security · Network Forensics',
+    tags: ['MSIS', 'Cybersecurity', 'Machine Learning', 'Cryptography'],
   },
   {
-    school: 'Pandit Deendayal Energy University', degree: 'B.Tech Computer Science Engineering',
+    type: 'work', org: 'Silver Touch Technologies', role: 'SOC Intern',
+    period: 'May – Jul 2024', location: 'India',
+    color: '#0369a1', bg: '#f0f9ff',
+    bullets: [
+      'Triaged security alerts and monitored network traffic using Wireshark, tshark, and Moloch/Arkime in a 24/7 SOC environment',
+      'Supported VAPT assessments and tracked 50+ CVEs across internal ticketing systems',
+      'Worked with SIEM tooling and Suricata IDS/IPS rules for threat detection',
+    ],
+    tags: ['SIEM', 'Suricata', 'Wireshark', 'VAPT', 'CVE Tracking'],
+  },
+  {
+    type: 'work', org: 'PDEU — Deepfake Forensics Lab', role: 'Research Assistant',
+    period: '2024 – 2025', location: 'Gandhinagar, India',
+    color: '#be123c', bg: '#fff1f2',
+    bullets: [
+      'Assisted faculty with literature review and dataset management for deepfake detection research',
+      'Maintained experimental records and supported research reports and presentations',
+    ],
+    tags: ['Deepfake Detection', 'Research', 'Python'],
+  },
+  {
+    type: 'education', org: 'Pandit Deendayal Energy University', role: 'B.Tech Computer Science Engineering',
     period: 'Jul 2021 – May 2025', location: 'Gandhinagar, India',
     color: '#b45309', bg: '#fffbeb', gpa: '9.44 / 10',
     detail: 'Cultural Club — Event Manager · Society of Mathematics · Zaayka Food & Culture Club',
+    tags: ['Computer Science', 'Networking', 'Security'],
   },
 ]
 
@@ -336,9 +328,33 @@ function ProjectCard({ project }: { project: Project }) {
   )
 }
 
+// ── Timeline Card ─────────────────────────────────────────────────────────────
+
+function TimelineCard({ item }: { item: TimelineItem }) {
+  return (
+    <div className="pcard" style={{ maxWidth: '380px', width: '100%', borderTop: `4px solid ${item.color}` }}>
+      <div style={{ padding: '20px 24px', background: item.bg }}>
+        <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1.05rem', color: item.color, marginBottom: '2px' }}>{item.org}</div>
+        <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>{item.role}</div>
+        {item.bullets && (
+          <ul style={{ paddingLeft: '14px', marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            {item.bullets.map((b, j) => <li key={j} style={{ fontSize: '0.8rem', color: '#4b5563', lineHeight: 1.65 }}>{b}</li>)}
+          </ul>
+        )}
+        {item.detail && <p style={{ fontSize: '0.8rem', color: '#6b7280', lineHeight: 1.65, marginBottom: '10px' }}>{item.detail}</p>}
+        {item.gpa && <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', color: item.color, fontWeight: 700, marginBottom: '8px' }}>GPA {item.gpa}</div>}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+          {item.tags.map(t => <span key={t} style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '0.58rem', fontFamily: 'JetBrains Mono', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', background: `${item.color}12`, color: item.color, border: `1px solid ${item.color}30` }}>{t}</span>)}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function Home() {
+  const [glassesOn, setGlasses] = useState(false)
   const fadeRefs = useRef<Element[]>([])
   useEffect(() => {
     const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.1 })
@@ -359,77 +375,93 @@ export default function Home() {
       <main style={{ position: 'relative', zIndex: 2 }}>
 
         {/* ── Hero ── */}
-        <section id="about" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '120px 24px 60px', textAlign: 'center' }}>
-          <div style={{ maxWidth: '680px', width: '100%' }}>
+        <section id="about" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '100px 24px 80px' }}>
+          <div style={{ maxWidth: '1100px', width: '100%', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '72px', flexWrap: 'wrap', justifyContent: 'center' }}>
 
-            {/* Photo */}
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '28px' }}>
-              <div className="avatar-ring" style={{ width: '110px', height: '110px' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="https://avatars.githubusercontent.com/u/167800111?v=4" alt="Twinkle Kamdar" />
+            {/* Text */}
+            <div style={{ flex: '1 1 340px', maxWidth: '520px' }}>
+              <div style={{ marginBottom: '20px' }}>
+                <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '6px 18px', borderRadius: '999px', background: '#fce7f3', color: '#be185d', border: '1px solid #fbcfe8', fontWeight: 600 }}>
+                  ✦ Seeking Full-Time Roles · Graduating Dec 2026
+                </span>
+              </div>
+              <h1 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(3rem,6vw,5rem)', lineHeight: 1.05, letterSpacing: '-0.02em', marginBottom: '16px' }}>
+                <span style={{ background: 'linear-gradient(135deg, #f472b6 0%, #8b5cf6 50%, #06b6d4 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                  Twinkle Kamdar
+                </span>
+              </h1>
+              <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.78rem', letterSpacing: '0.1em', color: '#9ca3af', marginBottom: '20px', textTransform: 'uppercase' }}>
+                MSIS · Information Security · Carnegie Mellon INI
+              </p>
+              <p style={{ fontSize: '1.05rem', color: '#4b5563', lineHeight: 1.8, marginBottom: '36px' }}>
+                I build security systems for the AI-native world —<br />
+                LLM agent monitors, autonomous IDS/IPS, and forensics tooling.<br />
+                <span style={{ color: '#f472b6', fontWeight: 600 }}>The attack surface is shifting. I&apos;m building what catches it.</span>
+              </p>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <a href="#projects" style={{ padding: '12px 28px', borderRadius: '999px', background: 'linear-gradient(135deg, #f472b6, #8b5cf6)', color: '#fff', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem', boxShadow: '0 8px 32px rgba(244,114,182,0.35)', transition: 'all 0.2s' }}
+                  onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                  onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
+                  View Projects ↓
+                </a>
+                <a href="https://github.com/hell-99" target="_blank" rel="noopener noreferrer"
+                  style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#374151', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #e5e7eb', transition: 'all 0.2s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#f472b6'; (e.currentTarget as HTMLElement).style.color = '#f472b6' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.color = '#374151' }}>
+                  GitHub
+                </a>
+                <a href="https://linkedin.com/in/twinklekamdar" target="_blank" rel="noopener noreferrer"
+                  style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#374151', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #e5e7eb', transition: 'all 0.2s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#8b5cf6'; (e.currentTarget as HTMLElement).style.color = '#8b5cf6' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.color = '#374151' }}>
+                  LinkedIn
+                </a>
               </div>
             </div>
 
-            {/* Badge */}
-            <div style={{ marginBottom: '20px' }}>
-              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '6px 18px', borderRadius: '999px', background: '#fce7f3', color: '#be185d', border: '1px solid #fbcfe8', fontWeight: 600 }}>
-                ✦ Seeking Full-Time Roles · Graduating Dec 2026
-              </span>
-            </div>
-
-            {/* Name */}
-            <h1 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(3.2rem,8vw,5.5rem)', lineHeight: 1.05, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-              <span style={{ background: 'linear-gradient(135deg, #f472b6 0%, #8b5cf6 50%, #06b6d4 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                Twinkle Kamdar
-              </span>
-            </h1>
-
-            {/* Sub */}
-            <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.8rem', letterSpacing: '0.1em', color: '#9ca3af', marginBottom: '20px', textTransform: 'uppercase' }}>
-              MSIS · Information Security · Carnegie Mellon INI
-            </p>
-
-            <p style={{ fontSize: '1.1rem', color: '#4b5563', lineHeight: 1.8, marginBottom: '36px' }}>
-              I build security systems for the AI-native world —<br />
-              LLM agent monitors, autonomous IDS/IPS, and forensics tooling.<br />
-              <span style={{ color: '#f472b6', fontWeight: 600 }}>The attack surface is shifting. I'm building what catches it.</span>
-            </p>
-
-            {/* CTAs */}
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '64px' }}>
-              <a href="#projects" style={{ padding: '12px 28px', borderRadius: '999px', background: 'linear-gradient(135deg, #f472b6, #8b5cf6)', color: '#fff', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem', boxShadow: '0 8px 32px rgba(244,114,182,0.35)', transition: 'all 0.2s' }}
-                onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
-                onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
-                View Projects ↓
-              </a>
-              <a href="https://github.com/hell-99" target="_blank" rel="noopener noreferrer"
-                style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#374151', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #e5e7eb', transition: 'all 0.2s' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#f472b6'; (e.currentTarget as HTMLElement).style.color = '#f472b6' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.color = '#374151' }}>
-                GitHub
-              </a>
-              <a href="https://linkedin.com/in/twinklekamdar" target="_blank" rel="noopener noreferrer"
-                style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#374151', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #e5e7eb', transition: 'all 0.2s' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#8b5cf6'; (e.currentTarget as HTMLElement).style.color = '#8b5cf6' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.color = '#374151' }}>
-                LinkedIn
-              </a>
-            </div>
-
-            {/* Stats */}
-            <div ref={addFade} className="fade-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '12px' }}>
-              {[
-                { val: '7+', label: 'Projects', bg: '#fce7f3', color: '#be185d' },
-                { val: 'CMU', label: 'Graduate Program', bg: '#f5f3ff', color: '#7c3aed' },
-                { val: 'Dec 2026', label: 'Graduating', bg: '#ecfdf5', color: '#15803d' },
-                { val: 'Open', label: 'To Opportunities', bg: '#eff6ff', color: '#1d4ed8' },
-              ].map(s => (
-                <div key={s.label} style={{ padding: '18px 10px', textAlign: 'center', borderRadius: '16px', background: s.bg, border: `1px solid ${s.color}20` }}>
-                  <div style={{ fontFamily: 'JetBrains Mono', fontWeight: 700, fontSize: '1rem', color: s.color, marginBottom: '4px' }}>{s.val}</div>
-                  <div style={{ fontSize: '0.65rem', color: '#9ca3af', fontWeight: 500 }}>{s.label}</div>
+            {/* Photo */}
+            <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+              <div style={{ position: 'relative', cursor: 'none' }} onClick={() => setGlasses(g => !g)}>
+                <div style={{
+                  width: '340px', height: '450px', borderRadius: '32px', overflow: 'hidden',
+                  boxShadow: '0 24px 80px rgba(244,114,182,0.28), 0 8px 32px rgba(0,0,0,0.08)',
+                  border: '3px solid #fbcfe8',
+                }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/twinkle.jpg" alt="Twinkle Kamdar" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 12%' }} />
                 </div>
-              ))}
+
+                {/* Pixel glasses */}
+                {glassesOn && <>
+                  <div style={{
+                    position: 'absolute', top: '20%', left: '50%', width: '60%',
+                    animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
+                  }}>
+                    <svg viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', display: 'block' }}>
+                      <rect x="4" y="6" width="62" height="36" rx="2" fill="#0a0a0a"/>
+                      <rect x="94" y="6" width="62" height="36" rx="2" fill="#0a0a0a"/>
+                      <rect x="66" y="18" width="28" height="12" fill="#0a0a0a"/>
+                      <rect x="0" y="18" width="4" height="12" fill="#0a0a0a"/>
+                      <rect x="156" y="18" width="4" height="12" fill="#0a0a0a"/>
+                      <rect x="10" y="12" width="22" height="14" rx="1" fill="#1f1f1f"/>
+                      <rect x="100" y="12" width="22" height="14" rx="1" fill="#1f1f1f"/>
+                    </svg>
+                  </div>
+                  <div style={{
+                    position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+                    fontFamily: 'JetBrains Mono', fontWeight: 700, fontSize: '1rem', color: '#fff',
+                    whiteSpace: 'nowrap', textShadow: '0 0 16px #f472b6, 0 2px 8px rgba(0,0,0,0.9)',
+                    animation: 'dealWithIt 0.4s 0.5s ease forwards', opacity: 0,
+                  }}>
+                    DEAL WITH IT ✦
+                  </div>
+                </>}
+              </div>
+              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', color: '#f472b6', opacity: glassesOn ? 0 : 0.75, transition: 'opacity 0.3s' }}>
+                click me ✦
+              </span>
             </div>
+
           </div>
         </section>
 
@@ -444,59 +476,64 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── Experience & Education ── */}
-        <section id="experience" style={{ padding: '100px 24px' }}>
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        {/* ── Journey Timeline ── */}
+        <section id="experience" style={{ padding: '100px 24px', background: '#faf9ff' }}>
+          <div style={{ maxWidth: '920px', margin: '0 auto' }}>
 
-            <div ref={addFade} className="fade-up" style={{ marginBottom: '48px' }}>
-              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#f472b6', fontWeight: 700 }}>✦ experience</span>
-              <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.2rem)', letterSpacing: '-0.02em', marginTop: '8px', marginBottom: '8px' }}>Where I&apos;ve Worked</h2>
+            <div ref={addFade} className="fade-up" style={{ marginBottom: '64px', textAlign: 'center' }}>
+              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#f472b6', fontWeight: 700 }}>✦ journey</span>
+              <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.2rem)', letterSpacing: '-0.02em', marginTop: '8px' }}>My Story</h2>
+              <p style={{ color: '#9ca3af', fontSize: '0.85rem', marginTop: '8px', fontFamily: 'JetBrains Mono' }}>work &amp; education — newest first</p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '80px' }}>
-              {EXPERIENCE.map((exp, i) => (
-                <div key={i} ref={addFade} className="fade-up pcard" style={{ transitionDelay: `${i*0.08}s`, borderLeft: `4px solid ${exp.color}` }}>
-                  <div style={{ padding: '28px 32px', background: exp.bg }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px', marginBottom: '4px' }}>
-                      <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1.25rem', color: exp.color }}>{exp.company}</div>
-                      <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.68rem', color: `${exp.color}99`, padding: '4px 12px', borderRadius: '999px', background: `${exp.color}12`, border: `1px solid ${exp.color}25`, whiteSpace: 'nowrap' }}>{exp.period}</span>
+            <div style={{ position: 'relative' }}>
+              {/* Continuous center line */}
+              <div style={{
+                position: 'absolute', left: '50%', top: '22px', bottom: '22px', width: '2px',
+                background: 'linear-gradient(to bottom, #f9a8d4 0%, #c4b5fd 25%, #86efac 55%, #93c5fd 80%, #fcd34d 100%)',
+                transform: 'translateX(-50%)', zIndex: 0,
+              }} />
+
+              {TIMELINE.map((item, i) => {
+                const isLeft = i % 2 === 0
+                return (
+                  <div key={i} ref={addFade} className="fade-up" style={{
+                    display: 'flex', alignItems: 'flex-start', marginBottom: '44px',
+                    position: 'relative', zIndex: 1, transitionDelay: `${i * 0.1}s`,
+                  }}>
+                    {/* Left */}
+                    <div style={{ flex: 1, paddingRight: '30px', display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+                      {isLeft ? <TimelineCard item={item} /> : (
+                        <div style={{ textAlign: 'right', paddingTop: '10px' }}>
+                          <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.75rem', fontWeight: 700, color: item.color }}>{item.period}</div>
+                          <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', color: '#9ca3af', marginTop: '3px' }}>{item.location}</div>
+                        </div>
+                      )}
                     </div>
-                    <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.72rem', fontWeight: 600, color: '#6b7280', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{exp.role} · {exp.location}</div>
-                    <ul style={{ paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
-                      {exp.bullets.map((b, j) => (
-                        <li key={j} style={{ fontSize: '0.9rem', color: '#4b5563', lineHeight: 1.7 }}>{b}</li>
-                      ))}
-                    </ul>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                      {exp.tags.map(t => (
-                        <span key={t} style={{ padding: '3px 10px', borderRadius: '999px', fontSize: '0.65rem', fontFamily: 'JetBrains Mono', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', background: `${exp.color}12`, color: exp.color, border: `1px solid ${exp.color}30` }}>{t}</span>
-                      ))}
+
+                    {/* Center dot */}
+                    <div style={{
+                      flexShrink: 0, width: '44px', height: '44px', borderRadius: '50%',
+                      background: item.bg, border: `3px solid ${item.color}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '1.2rem', zIndex: 2,
+                      boxShadow: `0 0 0 4px white, 0 0 0 6px ${item.color}25`,
+                    }}>
+                      {item.type === 'education' ? '🎓' : '💼'}
+                    </div>
+
+                    {/* Right */}
+                    <div style={{ flex: 1, paddingLeft: '30px', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                      {!isLeft ? <TimelineCard item={item} /> : (
+                        <div style={{ paddingTop: '10px' }}>
+                          <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.75rem', fontWeight: 700, color: item.color }}>{item.period}</div>
+                          <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', color: '#9ca3af', marginTop: '3px' }}>{item.location}</div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            <div ref={addFade} className="fade-up" style={{ marginBottom: '32px' }}>
-              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8b5cf6', fontWeight: 700 }}>✦ education</span>
-              <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.2rem)', letterSpacing: '-0.02em', marginTop: '8px' }}>Academic Background</h2>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: '20px' }}>
-              {EDUCATION.map((edu, i) => (
-                <div key={i} ref={addFade} className="fade-up pcard" style={{ transitionDelay: `${i*0.1}s`, borderLeft: `4px solid ${edu.color}` }}>
-                  <div style={{ padding: '28px 32px', background: edu.bg }}>
-                    <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1.2rem', color: edu.color, marginBottom: '4px' }}>{edu.school}</div>
-                    <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.72rem', fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px' }}>{edu.degree}</div>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '14px' }}>
-                      <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', color: edu.color, padding: '3px 12px', borderRadius: '999px', background: `${edu.color}12`, border: `1px solid ${edu.color}25` }}>{edu.period}</span>
-                      <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', color: '#9ca3af', padding: '3px 12px', borderRadius: '999px', background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.07)' }}>{edu.location}</span>
-                      {edu.gpa && <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', color: edu.color, padding: '3px 12px', borderRadius: '999px', background: `${edu.color}15`, border: `1px solid ${edu.color}30`, fontWeight: 700 }}>GPA {edu.gpa}</span>}
-                    </div>
-                    <p style={{ fontSize: '0.82rem', color: '#6b7280', lineHeight: 1.8 }}>{edu.detail}</p>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
@@ -539,14 +576,23 @@ export default function Home() {
 
         {/* ── Skills ── */}
         <section id="skills" style={{ padding: '100px 24px' }}>
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div ref={addFade} className="fade-up" style={{ marginBottom: '48px' }}>
               <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#10b981', fontWeight: 700 }}>✦ skills</span>
               <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.2rem)', letterSpacing: '-0.02em', marginTop: '8px' }}>Technical Stack</h2>
             </div>
-            <div ref={addFade} className="fade-up" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-              {SKILLS.map(s => (
-                <span key={s.label} className="pill" style={{ background: s.color, color: s.text, border: `1px solid ${s.text}25` }}>{s.label}</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+              {SKILL_CATEGORIES.map((cat, ci) => (
+                <div key={cat.label} ref={addFade} className="fade-up" style={{ transitionDelay: `${ci * 0.04}s` }}>
+                  <div style={{ marginBottom: '10px' }}>
+                    <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: cat.color, padding: '4px 14px', borderRadius: '999px', background: cat.bg, border: `1px solid ${cat.color}25` }}>{cat.label}</span>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {cat.skills.map(s => (
+                      <span key={s} className="pill" style={{ background: cat.bg, color: cat.color, border: `1px solid ${cat.color}25` }}>{s}</span>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
