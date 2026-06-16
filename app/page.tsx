@@ -15,15 +15,16 @@ const PROJECTS: Project[] = [
   {
     id: 'iris', name: 'IRIS', full: 'Identity Risk Intelligence System',
     tagline: 'Behavioral security monitor for LLM agent systems',
-    description: 'Built a 5-layer real-time detection engine that catches indirect prompt injection, cross-agent collusion, and behavioral drift — attacks that bypass every standard defense. Core contribution: intent-action divergence detection using llama-3.3-70b to compare what an agent should do vs what it actually does.',
-    metrics: [{ val: '93.1%', label: 'Precision' }, { val: '0.43ms', label: 'Latency' }, { val: '14', label: 'Collusion' }, { val: '894', label: 'Calls' }],
-    tags: ['LLM Security', 'Python', 'XGBoost', 'FastAPI', 'Streamlit', 'LangChain'],
+    description: 'Built a 5-layer real-time detection engine that catches indirect prompt injection, cross-agent collusion, and behavioral drift — attacks that bypass every standard defense. Core contribution: intent-action divergence detection using llama-3.3-70b to compare what an agent should do vs what it actually does. Red-teamed with Garak: 18 adversarial probes across 5 attack categories, 18/18 detected, zero bypasses. Every detection auto-mapped to the Lockheed Martin Cyber Kill Chain via MITRE ATLAS.',
+    metrics: [{ val: '93.1%', label: 'Precision' }, { val: '18/18', label: 'Red Team' }, { val: '14', label: 'Collusion' }, { val: '894', label: 'Calls' }],
+    tags: ['LLM Security', 'Python', 'FastAPI', 'Streamlit', 'LangChain', 'Garak', 'Kill Chain'],
     color: '#16a34a', bg: '#f0fdf4',
     screenshot: '/screenshots/iris.png',
     links: [
       { label: 'Live Demo', href: 'https://iris-hell99.streamlit.app', primary: true },
-      { label: 'Demo Video', href: 'https://youtu.be/nqiDZgpAdyM', primary: false },
+      { label: '▶ Demo Video', href: 'https://youtu.be/nqiDZgpAdyM', primary: false },
       { label: 'GitHub', href: 'https://github.com/hell-99/IRIS', primary: false },
+      { label: 'Medium Article', href: 'https://medium.com/@debugcigcode/my-ai-agent-passed-every-security-check-then-it-stole-my-credentials-069e3099cb4a', primary: false },
       { label: 'pip install iris-security', href: 'https://pypi.org/project/iris-security/', primary: false },
     ],
     category: 'featured',
@@ -31,9 +32,9 @@ const PROJECTS: Project[] = [
   {
     id: 'aegis', name: 'AEGIS', full: 'Autonomous Cybersecurity Intelligence System',
     tagline: 'Multi-layered autonomous IDS/IPS with post-quantum cryptography',
-    description: 'Multi-layered threat detection platform combining rule-based IDS, Isolation Forest, and CICIDS2017-trained Random Forest with ensemble voting. Deployed in a Mininet SDN environment with post-quantum crypto (Dilithium3 + Kyber768), SHA-256 tamper-evident audit ledger, self-healing watchdog, NIST CSF IR automation, and Kubernetes Zero Trust.',
-    metrics: [{ val: '3-layer', label: 'ML Ensemble' }, { val: 'PQC', label: 'Post-Quantum' }, { val: 'K8s', label: 'Zero Trust' }, { val: 'NIST CSF', label: 'IR Auto' }],
-    tags: ['IDS/IPS', 'Post-Quantum Crypto', 'Kubernetes', 'Ensemble ML', 'SDN/OpenFlow'],
+    description: 'Multi-layered threat detection platform combining rule-based IDS, Isolation Forest, and CICIDS2017-trained Random Forest with ensemble voting. Deployed in a Mininet SDN environment with post-quantum crypto (Dilithium3 + Kyber768), SHA-256 tamper-evident audit ledger, self-healing watchdog, NIST CSF IR automation, and Kubernetes Zero Trust. XDR correlator maps detections to the Lockheed Martin Cyber Kill Chain in real-time across AEGIS, IRIS, and AWS Scanner. SOAR layer automates threat response with AbuseIPDB enrichment and SLA-tiered playbooks.',
+    metrics: [{ val: '3-layer', label: 'ML Ensemble' }, { val: 'PQC', label: 'Post-Quantum' }, { val: 'Kill Chain', label: 'XDR Mapped' }, { val: 'SOAR', label: 'Auto-Response' }],
+    tags: ['IDS/IPS', 'Post-Quantum Crypto', 'Kill Chain', 'SOAR', 'XDR', 'Ensemble ML', 'SDN/OpenFlow'],
     color: '#7c3aed', bg: '#f5f3ff',
     screenshot: 'https://raw.githubusercontent.com/hell-99/AEGIS/main/Images/Critical.png',
     links: [{ label: 'GitHub', href: 'https://github.com/hell-99/AEGIS', primary: true }],
@@ -89,16 +90,16 @@ const PROJECTS: Project[] = [
 const FEATURED = PROJECTS.filter(p => p.category === 'featured')
 const COURSE   = PROJECTS.filter(p => p.category === 'course')
 
-const MARQUEE_ITEMS = ['LLM Security', 'Post-Quantum Crypto', 'IDS/IPS', 'Digital Forensics', 'Zero Trust', 'SIEM', 'XGBoost', 'Kubernetes', 'SDN/OpenFlow', 'Cloud Security', 'MITRE ATT&CK', 'Behavioral Analysis']
+const MARQUEE_ITEMS = ['LLM Security', 'Post-Quantum Crypto', 'IDS/IPS', 'Garak Red Team', 'Kill Chain', 'Digital Forensics', 'Zero Trust', 'SIEM', 'XGBoost', 'Kubernetes', 'SDN/OpenFlow', 'Cloud Security', 'MITRE ATLAS', 'Behavioral Analysis']
 
 type SkillCat = { label: string; color: string; bg: string; skills: string[] }
 const SKILL_CATEGORIES: SkillCat[] = [
   { label: 'Languages',               color: '#be185d', bg: '#fce7f3', skills: ['Python', 'C', 'C++', 'Java', 'SQL', 'Bash'] },
   { label: 'Security Tools',          color: '#7c3aed', bg: '#f5f3ff', skills: ['Wireshark', 'tshark', 'Suricata', 'Security Onion', 'Moloch/Arkime', 'Falco', 'Filebeat', 'ExifTool', 'KAPE', 'MFTECmd', 'analyzeMFT', 'python-evtx', 'pfSense', 'FortiGate'] },
-  { label: 'ML / AI',                 color: '#0369a1', bg: '#f0f9ff', skills: ['XGBoost', 'Random Forest', 'Isolation Forest', 'DBSCAN', 'scikit-learn', 'LangChain', 'LangGraph', 'Groq API', 'Ollama', 'Qwen3'] },
+  { label: 'ML / AI',                 color: '#0369a1', bg: '#f0f9ff', skills: ['XGBoost', 'Random Forest', 'Isolation Forest', 'DBSCAN', 'scikit-learn', 'LangChain', 'LangGraph', 'Groq API', 'Ollama', 'Qwen3', 'Garak'] },
   { label: 'Cloud & Infrastructure',  color: '#15803d', bg: '#ecfdf5', skills: ['GCP', 'Azure', 'AWS', 'Docker', 'Kubernetes', 'Colima', 'Mininet', 'GNS3', 'OpenFlow/Ryu', 'Faucet/OVS', 'Ansible', 'Salt'] },
   { label: 'Web & APIs',              color: '#b45309', bg: '#fffbeb', skills: ['FastAPI', 'Flask', 'Streamlit', 'Plotly', 'Next.js', 'TypeScript'] },
-  { label: 'Frameworks & Standards',  color: '#be123c', bg: '#fff1f2', skills: ['NIST CSF', 'PCI DSS v4.0.1', 'SOC 2', 'MITRE ATT&CK', 'MITRE ATLAS', 'CVSS', 'CWE', 'IRS Pub 1075', 'SSAE18'] },
+  { label: 'Frameworks & Standards',  color: '#be123c', bg: '#fff1f2', skills: ['NIST CSF', 'PCI DSS v4.0.1', 'SOC 2', 'MITRE ATT&CK', 'MITRE ATLAS', 'Cyber Kill Chain', 'CVSS', 'CWE', 'IRS Pub 1075', 'SSAE18'] },
   { label: 'Digital Forensics',       color: '#7e22ce', bg: '#fdf4ff', skills: ['Windows Forensics', 'Linux Forensics', 'MFT Analysis', 'EVTX Analysis', 'Android Forensics', 'Timeline Reconstruction', 'Anti-Forensics Detection'] },
   { label: 'Compliance',              color: '#0891b2', bg: '#ecfeff', skills: ['Scrut', 'Coalition', 'draw.io', 'Microsoft Forms'] },
 ]
@@ -111,7 +112,7 @@ const TIMELINE: TimelineItem[] = [
     period: 'May 2026 – Present', location: 'Remote · Milpitas, CA',
     color: '#7c3aed', bg: '#f5f3ff',
     bullets: [
-      'Building PCI DSS v4.0.1 compliance infrastructure — controls tracker, evidence mapping, and scoping documents across GCP US, Azure UAE, and GCP India CDE environments',
+      'Building PCI DSS v4.0.1 compliance infrastructure: controls tracker, evidence mapping, and scoping documents across GCP US, Azure UAE, and GCP India CDE environments',
       'Completed Coalition cyber insurance checklist across all domains: access control, SAT, endpoint security, network controls, and incident response',
       'Drafted System Security Plan for FTI protection with network architecture diagrams in draw.io',
       'Produced WAF vendor comparison, TWFG security questionnaire responses, and IRS Pub 1075 training materials',
@@ -137,7 +138,7 @@ const TIMELINE: TimelineItem[] = [
     tags: ['SIEM', 'Suricata', 'Wireshark', 'VAPT', 'CVE Tracking'],
   },
   {
-    type: 'work', org: 'PDEU — Deepfake Forensics Lab', role: 'Research Assistant',
+    type: 'work', org: 'PDEU Deepfake Forensics Lab', role: 'Research Assistant',
     period: '2024 – 2025', location: 'Gandhinagar, India',
     color: '#be123c', bg: '#fff1f2',
     bullets: [
@@ -150,7 +151,7 @@ const TIMELINE: TimelineItem[] = [
     type: 'education', org: 'Pandit Deendayal Energy University', role: 'B.Tech Computer Science Engineering',
     period: 'Jul 2021 – May 2025', location: 'Gandhinagar, India',
     color: '#b45309', bg: '#fffbeb', gpa: '9.44 / 10',
-    detail: 'Cultural Club — Event Manager · Society of Mathematics · Zaayka Food & Culture Club',
+    detail: 'Cultural Club, Event Manager · Society of Mathematics · Zaayka Food & Culture Club',
     tags: ['Computer Science', 'Networking', 'Security'],
   },
 ]
@@ -365,7 +366,7 @@ function ChatWidget() {
       const data = await res.json()
       setMsgs(m => [...m, { role: 'assistant', content: data.content }])
     } catch {
-      setMsgs(m => [...m, { role: 'assistant', content: "Something went wrong — reach Twinkle at tkamdar@andrew.cmu.edu!" }])
+      setMsgs(m => [...m, { role: 'assistant', content: "Something went wrong. Reach Twinkle at tkamdar@andrew.cmu.edu!" }])
     }
     setLoading(false)
   }
@@ -398,7 +399,7 @@ function ChatWidget() {
           {/* Header */}
           <div style={{ padding: '16px 20px', background: 'linear-gradient(135deg, #f472b6, #8b5cf6)', color: '#fff' }}>
             <div style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: '1rem' }}>Ask Twinkle&apos;s AI ✦</div>
-            <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', opacity: 0.85, marginTop: '2px' }}>Powered by Claude · Ask anything</div>
+            <div style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', opacity: 0.85, marginTop: '2px' }}>Instant replies · Ask anything</div>
           </div>
 
           {/* Messages */}
@@ -425,21 +426,19 @@ function ChatWidget() {
           </div>
 
           {/* Suggestions */}
-          {msgs.length === 1 && (
-            <div style={{ padding: '0 12px 8px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              {SUGGESTIONS.map(s => (
-                <button key={s} onClick={() => send(s)} style={{
-                  padding: '4px 10px', borderRadius: '999px', fontSize: '0.68rem',
-                  fontFamily: 'JetBrains Mono', background: '#fce7f3', color: '#be185d',
-                  border: '1px solid #fbcfe8', cursor: 'none', transition: 'all 0.15s',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#f472b6'; e.currentTarget.style.color = '#fff' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = '#fce7f3'; e.currentTarget.style.color = '#be185d' }}>
-                  {s}
-                </button>
-              ))}
-            </div>
-          )}
+          <div style={{ padding: '0 12px 8px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            {SUGGESTIONS.map(s => (
+              <button key={s} onClick={() => send(s)} style={{
+                padding: '4px 10px', borderRadius: '999px', fontSize: '0.68rem',
+                fontFamily: 'JetBrains Mono', background: '#fce7f3', color: '#be185d',
+                border: '1px solid #fbcfe8', cursor: 'none', transition: 'all 0.15s',
+              }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#f472b6'; e.currentTarget.style.color = '#fff' }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#fce7f3'; e.currentTarget.style.color = '#be185d' }}>
+                {s}
+              </button>
+            ))}
+          </div>
 
           {/* Input */}
           <div style={{ padding: '12px', borderTop: '1px solid #f3e8ff', display: 'flex', gap: '8px' }}>
@@ -491,6 +490,103 @@ function TimelineCard({ item }: { item: TimelineItem }) {
   )
 }
 
+// ── Contact Form ─────────────────────────────────────────────────────────────
+
+function ContactForm() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [sent, setSent] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const subject = encodeURIComponent(`Portfolio Contact from ${name}`)
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)
+    window.open(`mailto:tkamdar@andrew.cmu.edu?subject=${subject}&body=${body}`)
+    setSent(true)
+    setName(''); setEmail(''); setMessage('')
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '14px 18px', borderRadius: '14px',
+    border: '1.5px solid #f3e8ff', fontSize: '0.95rem', fontFamily: 'DM Sans',
+    background: '#fdf4ff', outline: 'none', color: '#374151',
+    transition: 'border-color 0.2s', cursor: 'text',
+  }
+
+  return (
+    <section id="contact" style={{ padding: '100px 24px 120px', background: 'linear-gradient(160deg, #1a1028 0%, #2d1b4e 50%, #1a1028 100%)' }}>
+      <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+        <div style={{ marginBottom: '12px' }}>
+          <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.68rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#c4b5fd', fontWeight: 600 }}>✦ get in touch</span>
+        </div>
+        <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(3rem,7vw,5.5rem)', letterSpacing: '-0.02em', color: '#fff', marginBottom: '48px', lineHeight: 1 }}>
+          Contact.
+        </h2>
+
+        {sent ? (
+          <div style={{ textAlign: 'center', padding: '60px 0' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✦</div>
+            <p style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.5rem', color: '#f9a8d4', marginBottom: '8px' }}>Message sent!</p>
+            <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.75rem', color: '#a78bfa' }}>Your email client opened with the message pre-filled. Twinkle will get back to you soon.</p>
+            <button onClick={() => setSent(false)} style={{ marginTop: '24px', padding: '10px 28px', borderRadius: '999px', border: '1.5px solid #c4b5fd', background: 'transparent', color: '#c4b5fd', fontFamily: 'JetBrains Mono', fontSize: '0.75rem', cursor: 'none', transition: 'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#c4b5fd20' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}>
+              Send another
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div>
+                <label style={{ fontFamily: 'JetBrains Mono', fontSize: '0.72rem', fontWeight: 600, color: '#c4b5fd', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '0.9rem' }}>👤</span> Name
+                </label>
+                <input value={name} onChange={e => setName(e.target.value)} placeholder="Your name" required style={inputStyle}
+                  onFocus={e => (e.currentTarget.style.borderColor = '#f472b6')}
+                  onBlur={e => (e.currentTarget.style.borderColor = '#f3e8ff')} />
+              </div>
+              <div>
+                <label style={{ fontFamily: 'JetBrains Mono', fontSize: '0.72rem', fontWeight: 600, color: '#c4b5fd', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '0.9rem' }}>✉️</span> Email
+                </label>
+                <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Your email" type="email" required style={inputStyle}
+                  onFocus={e => (e.currentTarget.style.borderColor = '#8b5cf6')}
+                  onBlur={e => (e.currentTarget.style.borderColor = '#f3e8ff')} />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ fontFamily: 'JetBrains Mono', fontSize: '0.72rem', fontWeight: 600, color: '#c4b5fd', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '0.9rem' }}>💬</span> Message
+              </label>
+              <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Hey Twinkle, love the website! I'd like to chat about some opportunities you might like! 🎉" required rows={6}
+                style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.7 }}
+                onFocus={e => (e.currentTarget.style.borderColor = '#f472b6')}
+                onBlur={e => (e.currentTarget.style.borderColor = '#f3e8ff')} />
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '8px' }}>
+              <button type="submit" style={{
+                padding: '16px 56px', borderRadius: '999px', fontSize: '1rem', fontWeight: 700,
+                background: 'linear-gradient(135deg, #f472b6, #8b5cf6)',
+                color: '#fff', border: 'none', cursor: 'none',
+                boxShadow: '0 8px 32px rgba(244,114,182,0.45)',
+                display: 'flex', alignItems: 'center', gap: '10px', transition: 'all 0.2s',
+              }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(244,114,182,0.55)' }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(244,114,182,0.45)' }}>
+                Send Message
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </section>
+  )
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function Home() {
@@ -534,9 +630,9 @@ export default function Home() {
                 MSIS · Information Security · Carnegie Mellon INI
               </p>
               <p style={{ fontSize: '1.05rem', color: '#4b5563', lineHeight: 1.8, marginBottom: '36px' }}>
-                I build security systems for the AI-native world —<br />
-                LLM agent monitors, autonomous IDS/IPS, and forensics tooling.<br />
-                <span style={{ color: '#f472b6', fontWeight: 600 }}>The attack surface is shifting. I&apos;m building what catches it.</span>
+                CMU security grad student building defenses for AI systems that didn&apos;t exist two years ago.<br />
+                I built IRIS, a real-time LLM security monitor catching prompt injection and cross-agent collusion with 93.1% precision.<br />
+                <span style={{ color: '#f472b6', fontWeight: 600 }}>The AI attack surface is growing faster than the defenses. I&apos;m on the right side of that gap.</span>
               </p>
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 <a href="#projects" style={{ padding: '12px 28px', borderRadius: '999px', background: 'linear-gradient(135deg, #f472b6, #8b5cf6)', color: '#fff', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem', boxShadow: '0 8px 32px rgba(244,114,182,0.35)', transition: 'all 0.2s' }}
@@ -544,13 +640,19 @@ export default function Home() {
                   onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
                   View Projects ↓
                 </a>
+                <a href="https://youtu.be/nqiDZgpAdyM" target="_blank" rel="noopener noreferrer"
+                  style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#16a34a', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #bbf7d0', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#f0fdf4'; (e.currentTarget as HTMLElement).style.borderColor = '#16a34a' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fff'; (e.currentTarget as HTMLElement).style.borderColor = '#bbf7d0' }}>
+                  ▶ Watch IRIS Demo
+                </a>
                 <a href="https://github.com/hell-99" target="_blank" rel="noopener noreferrer"
                   style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#374151', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #e5e7eb', transition: 'all 0.2s' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#f472b6'; (e.currentTarget as HTMLElement).style.color = '#f472b6' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.color = '#374151' }}>
                   GitHub
                 </a>
-                <a href="https://linkedin.com/in/twinklekamdar" target="_blank" rel="noopener noreferrer"
+                <a href="https://linkedin.com/in/twinkle-kamdar3" target="_blank" rel="noopener noreferrer"
                   style={{ padding: '12px 24px', borderRadius: '999px', background: '#fff', color: '#374151', fontWeight: 600, textDecoration: 'none', fontSize: '0.95rem', border: '1.5px solid #e5e7eb', transition: 'all 0.2s' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#8b5cf6'; (e.currentTarget as HTMLElement).style.color = '#8b5cf6' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLElement).style.color = '#374151' }}>
@@ -580,7 +682,7 @@ export default function Home() {
                 {/* Pixel glasses */}
                 {glassesOn && <>
                   <div style={{
-                    position: 'absolute', top: '27%', left: '49%', width: '28%',
+                    position: 'absolute', top: '27%', left: '44%', width: '28%',
                     animation: 'slideGlasses 0.5s cubic-bezier(0.4,0,0.2,1) forwards',
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -622,7 +724,7 @@ export default function Home() {
             <div ref={addFade} className="fade-up" style={{ marginBottom: '64px', textAlign: 'center' }}>
               <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#f472b6', fontWeight: 700 }}>✦ journey</span>
               <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.2rem)', letterSpacing: '-0.02em', marginTop: '8px' }}>My Story</h2>
-              <p style={{ color: '#9ca3af', fontSize: '0.85rem', marginTop: '8px', fontFamily: 'JetBrains Mono' }}>work &amp; education — newest first</p>
+              <p style={{ color: '#9ca3af', fontSize: '0.85rem', marginTop: '8px', fontFamily: 'JetBrains Mono' }}>work &amp; education · newest first</p>
             </div>
 
             <div style={{ position: 'relative' }}>
@@ -738,44 +840,7 @@ export default function Home() {
         </section>
 
         {/* ── Contact ── */}
-        <section id="contact" style={{ padding: '100px 24px 120px', background: '#fdf4ff' }}>
-          <div style={{ maxWidth: '560px', margin: '0 auto', textAlign: 'center' }}>
-            <div ref={addFade} className="fade-up">
-              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#f472b6', fontWeight: 700 }}>✦ contact</span>
-              <h2 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.2rem)', letterSpacing: '-0.02em', margin: '8px 0 14px' }}>Say Hello ✦</h2>
-              <p style={{ color: '#6b7280', lineHeight: 1.8, marginBottom: '48px' }}>
-                Open to internships, research, and full-time roles in cybersecurity and AI security. Graduating December 2026.
-              </p>
-
-              <div style={{ background: '#fff', borderRadius: '24px', padding: '32px', marginBottom: '32px', textAlign: 'left', boxShadow: '0 4px 24px rgba(0,0,0,0.05)', border: '1px solid #fce7f3' }}>
-                {[
-                  { label: 'Email',     val: 'tkamdar@andrew.cmu.edu',        href: 'mailto:tkamdar@andrew.cmu.edu',        color: '#f472b6' },
-                  { label: 'LinkedIn',  val: 'linkedin.com/in/twinklekamdar', href: 'https://linkedin.com/in/twinklekamdar', color: '#8b5cf6' },
-                  { label: 'GitHub',    val: 'github.com/hell-99',            href: 'https://github.com/hell-99',           color: '#10b981' },
-                  { label: 'IRIS Demo', val: 'iris-hell99.streamlit.app',     href: 'https://iris-hell99.streamlit.app',    color: '#0ea5e9' },
-                ].map(c => (
-                  <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '14px' }}>
-                    <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.68rem', color: '#9ca3af', width: '64px', flexShrink: 0 }}>{c.label}</span>
-                    <span style={{ color: '#d1d5db', fontSize: '0.8rem' }}>→</span>
-                    <a href={c.href} target="_blank" rel="noopener noreferrer"
-                      style={{ fontFamily: 'JetBrains Mono', fontSize: '0.78rem', color: c.color, textDecoration: 'none', transition: 'opacity 0.2s' }}
-                      onMouseEnter={e => (e.currentTarget.style.opacity = '0.65')}
-                      onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
-                      {c.val}
-                    </a>
-                  </div>
-                ))}
-              </div>
-
-              <a href="mailto:tkamdar@andrew.cmu.edu"
-                style={{ display: 'inline-block', padding: '14px 44px', borderRadius: '999px', background: 'linear-gradient(135deg, #f472b6, #8b5cf6)', color: '#fff', fontWeight: 700, textDecoration: 'none', fontSize: '1rem', boxShadow: '0 8px 32px rgba(244,114,182,0.35)', transition: 'all 0.2s' }}
-                onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
-                onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
-                Get In Touch →
-              </a>
-            </div>
-          </div>
-        </section>
+        <ContactForm />
 
         <ChatWidget />
 
