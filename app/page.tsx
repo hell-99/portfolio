@@ -13,11 +13,11 @@ type Project = {
 
 const PROJECTS: Project[] = [
   {
-    id: 'malware-lab', name: 'Malware Analysis Lab', full: 'Cross-Platform Malware Analysis: XMRig & OceanLotus (APT32)',
-    tagline: 'Static + dynamic malware analysis across Linux and macOS with custom detection engineering',
-    description: 'Conducted static and dynamic analysis of XMRig (Linux ELF cryptominer) via strace, tcpdump, and objdump in an isolated VM sandbox, confirming live C2 connection behavior, hardware-fingerprinting patterns, and container-evasion techniques. Designed a family-level YARA rule generalizing beyond XMRig to two independent miner codebases (xmr-stak, cgminer) with 0% false positives across a 1,319-binary clean corpus, and validated a complementary behavioral signal live via auditd. Performed static analysis of two OceanLotus (APT32) macOS variants (2014, 2017), identifying AES-128 encrypted C2 and quantifying the actor\'s 3-year TTP evolution from dropper to self-contained backdoor. Authored full CTI reports with MITRE ATT&CK mapping and integrated findings into IRIS as a live detection endpoint.',
-    metrics: [{ val: '0%', label: 'False Positives' }, { val: '3', label: 'Miner Families' }, { val: '2.5×', label: 'APT TTP Growth' }, { val: '21', label: 'ATT&CK TTPs' }],
-    tags: ['Malware Analysis', 'YARA', 'MITRE ATT&CK', 'Linux', 'macOS', 'Mach-O', 'Detection Engineering', 'auditd'],
+    id: 'malware-lab', name: 'Malware Analysis Lab', full: 'Cross-Platform Malware Analysis: XMRig, OceanLotus & Lazarus Group',
+    tagline: 'Static + dynamic malware analysis across Linux, macOS, and the npm supply chain',
+    description: 'Conducted static and dynamic analysis of XMRig (Linux ELF cryptominer) via strace, tcpdump, and objdump in an isolated VM sandbox, confirming live C2 connection behavior, hardware-fingerprinting patterns, and container-evasion techniques. Designed a family-level YARA rule generalizing beyond XMRig to two independent miner codebases (xmr-stak, cgminer) with 0% false positives across a 1,319-binary clean corpus, and validated a complementary behavioral signal live via auditd. Performed static analysis of macOS malware from two independently attributed nation-state actors, OceanLotus/APT32 (Vietnam) and Lazarus Group/AppleJeus (North Korea), identifying AES-128 encrypted C2, a masquerading exfiltration technique disguised as image uploads, and a 3-year TTP evolution for OceanLotus. Analyzed the 2018 event-stream/flatmap-stream npm supply chain compromise, reverse-engineering the RSA-encrypted, environmentally-keyed payload that targeted the Copay Bitcoin wallet. Authored full CTI reports with MITRE ATT&CK mapping and TLP handling statements, and integrated findings into IRIS as a live detection endpoint.',
+    metrics: [{ val: '0%', label: 'False Positives' }, { val: '3', label: 'Platforms' }, { val: '34', label: 'ATT&CK TTPs' }, { val: '2', label: 'Nation-States' }],
+    tags: ['Malware Analysis', 'YARA', 'MITRE ATT&CK', 'Linux', 'macOS', 'Supply Chain', 'Detection Engineering', 'auditd'],
     color: '#991b1b', bg: '#fef2f2',
     screenshot: '/screenshots/malware-lab.png',
     links: [
