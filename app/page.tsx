@@ -22,6 +22,7 @@ const PROJECTS: Project[] = [
     screenshot: '/screenshots/malware-lab.png',
     links: [
       { label: 'Report', href: '/malware-analysis-report.html', primary: true },
+      { label: 'GitHub', href: 'https://github.com/hell-99/malware-analysis-lab', primary: false },
     ],
     category: 'featured',
   },
