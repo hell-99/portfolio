@@ -19,6 +19,7 @@ const PROJECTS: Project[] = [
     metrics: [{ val: '0%', label: 'False Positives' }, { val: '3', label: 'Miner Families' }, { val: '2.5×', label: 'APT TTP Growth' }, { val: '21', label: 'ATT&CK TTPs' }],
     tags: ['Malware Analysis', 'YARA', 'MITRE ATT&CK', 'Linux', 'macOS', 'Mach-O', 'Detection Engineering', 'auditd'],
     color: '#991b1b', bg: '#fef2f2',
+    screenshot: '/screenshots/malware-lab.png',
     links: [
       { label: 'Report', href: '/malware-analysis-report.html', primary: true },
     ],
